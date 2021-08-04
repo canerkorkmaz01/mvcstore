@@ -1,0 +1,11 @@
+Reyon
+Kategori
+Ürün
+Sepet
+Favoriler
+Sipariş
+Üyelik sistemi olan e-ticaret uygulaması
+
+- Migration (Mysql, SqlServer)
+- Data (CodeFirst DataModel)
+- Web
