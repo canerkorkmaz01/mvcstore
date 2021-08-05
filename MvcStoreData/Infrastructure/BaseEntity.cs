@@ -11,5 +11,7 @@ namespace MvcStoreData.Infrastructure
         public virtual DateTime DateCreated { get; set; }
 
         public virtual bool Enabled { get; set; }
+
+        public virtual User User { get; set; }
     }
 }

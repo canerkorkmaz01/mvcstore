@@ -9,3 +9,15 @@ Sipariş
 - Migration (Mysql, SqlServer)
 - Data (CodeFirst DataModel)
 - Web
+
+Role
+User
+Rayon
+  Category
+    Product 
+      ProductImages
+Order
+  OrderItem
+ShoppingCart
+Favorites
+
