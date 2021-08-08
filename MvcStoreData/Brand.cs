@@ -1,15 +1,24 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MvcStoreData.Infrastructure;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MvcStoreData
 {
     public class Brand : SortableBaseEntity
     {
+        [Display(Name = "Marka Adı")]
+        [Required(ErrorMessage = "{0} alanı boş bırakılamaz")]
         public string Name { get; set; }
 
         public string Photo { get; set; }
+
+        [NotMapped]
+        [Display(Name = "Logo")]
+        public IFormFile PhotoFile { get; set; }
 
         public ICollection<Product> Products { get; set; } = new HashSet<Product>();
 

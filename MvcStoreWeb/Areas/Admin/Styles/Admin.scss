@@ -1,0 +1,14 @@
+﻿$fa-font-path: '/css/webfonts';
+
+@import "../../../Styles/fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "../../../Styles/fortawesome/fontawesome-free/scss/solid.scss";
+@import "../../../Styles/fortawesome/fontawesome-free/scss/regular.scss";
+@import "../../../Styles/fortawesome/fontawesome-free/scss/brands.scss";
+
+@import "../Lib/admin-lte/build/scss/adminlte.scss";
+
+
+.field-validation-error {
+    @extend .text-danger;
+    font-size: smaller;
+}

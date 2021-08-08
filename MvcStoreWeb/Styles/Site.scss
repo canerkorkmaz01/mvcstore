@@ -1,0 +1,40 @@
+﻿$primary: #0068c1;
+
+$enable-rounded: false;
+$font-size-base : .85rem;
+
+@import "bootstrap/scss/bootstrap.scss";
+
+$fa-font-path : '/css/webfonts';
+
+@import "fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "fortawesome/fontawesome-free/scss/solid.scss";
+@import "fortawesome/fontawesome-free/scss/regular.scss";
+@import "fortawesome/fontawesome-free/scss/brands.scss";
+
+.ms-login-panel {
+    min-width: 320px;
+}
+
+.field-validation-error {
+    @extend .text-danger;
+    font-size: smaller;
+}
+
+.alert-danger {
+    @extend .bg-danger;
+    @extend .text-white;
+    
+}
+
+.alert-danger ul {
+    @extend .list-unstyled;
+    @extend .mb-0;
+}
+
+.alert-danger ul li::before {
+    @extend .mr-2;
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    content: '\f071';
+}

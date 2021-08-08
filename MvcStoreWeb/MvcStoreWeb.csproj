@@ -4,4 +4,74 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="compilerconfig.json" />
+    <Content Remove="wwwroot\css\webfonts\fa-brands-400.eot" />
+    <Content Remove="wwwroot\css\webfonts\fa-brands-400.svg" />
+    <Content Remove="wwwroot\css\webfonts\fa-brands-400.ttf" />
+    <Content Remove="wwwroot\css\webfonts\fa-brands-400.woff" />
+    <Content Remove="wwwroot\css\webfonts\fa-brands-400.woff2" />
+    <Content Remove="wwwroot\css\webfonts\fa-regular-400.eot" />
+    <Content Remove="wwwroot\css\webfonts\fa-regular-400.svg" />
+    <Content Remove="wwwroot\css\webfonts\fa-regular-400.ttf" />
+    <Content Remove="wwwroot\css\webfonts\fa-regular-400.woff" />
+    <Content Remove="wwwroot\css\webfonts\fa-regular-400.woff2" />
+    <Content Remove="wwwroot\css\webfonts\fa-solid-900.eot" />
+    <Content Remove="wwwroot\css\webfonts\fa-solid-900.svg" />
+    <Content Remove="wwwroot\css\webfonts\fa-solid-900.ttf" />
+    <Content Remove="wwwroot\css\webfonts\fa-solid-900.woff" />
+    <Content Remove="wwwroot\css\webfonts\fa-solid-900.woff2" />
+    <Content Remove="wwwroot\js\adminlte.js" />
+    <Content Remove="wwwroot\js\adminlte.js.map" />
+    <Content Remove="wwwroot\js\adminlte.min.js" />
+    <Content Remove="wwwroot\js\adminlte.min.js.map" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.1" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MigrationMySql\MigrationMySql.csproj" />
+    <ProjectReference Include="..\MigrationSqlServer\MigrationSqlServer.csproj" />
+    <ProjectReference Include="..\MvcStoreData\MvcStoreData.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Admin\Lib\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="compilerconfig.json" />
+    <None Include="wwwroot\css\webfonts\fa-brands-400.eot" />
+    <None Include="wwwroot\css\webfonts\fa-brands-400.svg" />
+    <None Include="wwwroot\css\webfonts\fa-brands-400.ttf" />
+    <None Include="wwwroot\css\webfonts\fa-brands-400.woff" />
+    <None Include="wwwroot\css\webfonts\fa-brands-400.woff2" />
+    <None Include="wwwroot\css\webfonts\fa-regular-400.eot" />
+    <None Include="wwwroot\css\webfonts\fa-regular-400.svg" />
+    <None Include="wwwroot\css\webfonts\fa-regular-400.ttf" />
+    <None Include="wwwroot\css\webfonts\fa-regular-400.woff" />
+    <None Include="wwwroot\css\webfonts\fa-regular-400.woff2" />
+    <None Include="wwwroot\css\webfonts\fa-solid-900.eot" />
+    <None Include="wwwroot\css\webfonts\fa-solid-900.svg" />
+    <None Include="wwwroot\css\webfonts\fa-solid-900.ttf" />
+    <None Include="wwwroot\css\webfonts\fa-solid-900.woff" />
+    <None Include="wwwroot\css\webfonts\fa-solid-900.woff2" />
+    <None Include="wwwroot\js\adminlte.js" />
+    <None Include="wwwroot\js\adminlte.js.map" />
+    <None Include="wwwroot\js\adminlte.min.js" />
+    <None Include="wwwroot\js\adminlte.min.js.map" />
+  </ItemGroup>
+
 </Project>

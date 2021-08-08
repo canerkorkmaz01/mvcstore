@@ -61,6 +61,10 @@ namespace MvcStoreData
                 .IsUnicode(false);
 
             builder
+                .Property(p => p.Price)
+                .HasPrecision(18, 4);
+
+            builder
                 .HasMany(p => p.Comments)
                 .WithOne(p => p.Product)
                 .HasForeignKey(p => p.ProductId)
