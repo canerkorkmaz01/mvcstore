@@ -10,6 +10,7 @@ using MvcStoreData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace MvcStoreWeb
@@ -132,7 +133,7 @@ namespace MvcStoreWeb
                     Email = Configuration.GetValue<string>("Application:DefaultAdmin:UserName"),
                     EmailConfirmed = true
                 };
-
+                userManager.AddClaimAsync(newUser, new Claim(ClaimTypes.Name, newUser.Name)).Wait();
                 userManager.CreateAsync(newUser, Configuration.GetValue<string>("Application:DefaultAdmin:Password")).Wait();
                 userManager.AddToRoleAsync(newUser, "Administrators").Wait();
             }

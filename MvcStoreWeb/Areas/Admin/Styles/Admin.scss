@@ -12,3 +12,21 @@
     @extend .text-danger;
     font-size: smaller;
 }
+
+
+.alert-danger {
+    @extend .bg-danger;
+    @extend .text-white;
+}
+
+.alert-danger ul {
+    @extend .list-unstyled;
+    @extend .mb-0;
+}
+
+.alert-danger ul li::before {
+    @extend .mr-2;
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    content: '\f071';
+}

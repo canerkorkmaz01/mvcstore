@@ -4977,7 +4977,7 @@ mark,
   padding: 0.2em;
   background-color: #fcf8e3; }
 
-.list-unstyled {
+.list-unstyled, .alert-danger ul {
   padding-left: 0;
   list-style: none; }
 
@@ -9449,12 +9449,14 @@ button.bg-warning:hover,
 button.bg-warning:focus {
   background-color: #d39e00 !important; }
 
-.bg-danger {
+.bg-danger, .alert-danger {
   background-color: #dc3545 !important; }
 
-a.bg-danger:hover, a.bg-danger:focus,
+a.bg-danger:hover, a.alert-danger:hover, a.bg-danger:focus, a.alert-danger:focus,
 button.bg-danger:hover,
-button.bg-danger:focus {
+button.alert-danger:hover,
+button.bg-danger:focus,
+button.alert-danger:focus {
   background-color: #bd2130 !important; }
 
 .bg-light {
@@ -10299,7 +10301,7 @@ button.bg-dark:focus {
 .mx-0 {
   margin-right: 0 !important; }
 
-.mb-0,
+.mb-0, .alert-danger ul,
 .my-0 {
   margin-bottom: 0 !important; }
 
@@ -10333,7 +10335,7 @@ button.bg-dark:focus {
 .my-2 {
   margin-top: 0.5rem !important; }
 
-.mr-2,
+.mr-2, .alert-danger ul li::before,
 .mx-2 {
   margin-right: 0.5rem !important; }
 
@@ -11742,7 +11744,7 @@ button.bg-dark:focus {
 .font-italic {
   font-style: italic !important; }
 
-.text-white {
+.text-white, .alert-danger {
   color: #fff !important; }
 
 .text-primary {
@@ -21044,26 +21046,26 @@ body.text-sm .input-group-text {
 .card-danger.card-outline-tabs > .card-header a.active {
   border-top: 3px solid #dc3545; }
 
-.bg-danger > .card-header .btn-tool,
+.bg-danger > .card-header .btn-tool, .alert-danger > .card-header .btn-tool,
 .bg-gradient-danger > .card-header .btn-tool,
 .card-danger:not(.card-outline) > .card-header .btn-tool {
   color: rgba(255, 255, 255, 0.8); }
-  .bg-danger > .card-header .btn-tool:hover,
+  .bg-danger > .card-header .btn-tool:hover, .alert-danger > .card-header .btn-tool:hover,
   .bg-gradient-danger > .card-header .btn-tool:hover,
   .card-danger:not(.card-outline) > .card-header .btn-tool:hover {
     color: #fff; }
 
-.card.bg-danger .bootstrap-datetimepicker-widget .table td,
-.card.bg-danger .bootstrap-datetimepicker-widget .table th,
+.card.bg-danger .bootstrap-datetimepicker-widget .table td, .card.alert-danger .bootstrap-datetimepicker-widget .table td,
+.card.bg-danger .bootstrap-datetimepicker-widget .table th, .card.alert-danger .bootstrap-datetimepicker-widget .table th,
 .card.bg-gradient-danger .bootstrap-datetimepicker-widget .table td,
 .card.bg-gradient-danger .bootstrap-datetimepicker-widget .table th {
   border: none; }
 
-.card.bg-danger .bootstrap-datetimepicker-widget table thead tr:first-child th:hover,
-.card.bg-danger .bootstrap-datetimepicker-widget table td.day:hover,
-.card.bg-danger .bootstrap-datetimepicker-widget table td.hour:hover,
-.card.bg-danger .bootstrap-datetimepicker-widget table td.minute:hover,
-.card.bg-danger .bootstrap-datetimepicker-widget table td.second:hover,
+.card.bg-danger .bootstrap-datetimepicker-widget table thead tr:first-child th:hover, .card.alert-danger .bootstrap-datetimepicker-widget table thead tr:first-child th:hover,
+.card.bg-danger .bootstrap-datetimepicker-widget table td.day:hover, .card.alert-danger .bootstrap-datetimepicker-widget table td.day:hover,
+.card.bg-danger .bootstrap-datetimepicker-widget table td.hour:hover, .card.alert-danger .bootstrap-datetimepicker-widget table td.hour:hover,
+.card.bg-danger .bootstrap-datetimepicker-widget table td.minute:hover, .card.alert-danger .bootstrap-datetimepicker-widget table td.minute:hover,
+.card.bg-danger .bootstrap-datetimepicker-widget table td.second:hover, .card.alert-danger .bootstrap-datetimepicker-widget table td.second:hover,
 .card.bg-gradient-danger .bootstrap-datetimepicker-widget table thead tr:first-child th:hover,
 .card.bg-gradient-danger .bootstrap-datetimepicker-widget table td.day:hover,
 .card.bg-gradient-danger .bootstrap-datetimepicker-widget table td.hour:hover,
@@ -21072,12 +21074,12 @@ body.text-sm .input-group-text {
   background-color: #c62232;
   color: #fff; }
 
-.card.bg-danger .bootstrap-datetimepicker-widget table td.today::before,
+.card.bg-danger .bootstrap-datetimepicker-widget table td.today::before, .card.alert-danger .bootstrap-datetimepicker-widget table td.today::before,
 .card.bg-gradient-danger .bootstrap-datetimepicker-widget table td.today::before {
   border-bottom-color: #fff; }
 
-.card.bg-danger .bootstrap-datetimepicker-widget table td.active,
-.card.bg-danger .bootstrap-datetimepicker-widget table td.active:hover,
+.card.bg-danger .bootstrap-datetimepicker-widget table td.active, .card.alert-danger .bootstrap-datetimepicker-widget table td.active,
+.card.bg-danger .bootstrap-datetimepicker-widget table td.active:hover, .card.alert-danger .bootstrap-datetimepicker-widget table td.active:hover,
 .card.bg-gradient-danger .bootstrap-datetimepicker-widget table td.active,
 .card.bg-gradient-danger .bootstrap-datetimepicker-widget table td.active:hover {
   background-color: #e4606d;
@@ -22857,26 +22859,31 @@ html.maximized-card {
 .dark-mode .card-danger.card-outline-tabs > .card-header a.active {
   border-top: 3px solid #e74c3c; }
 
-.dark-mode .bg-danger > .card-header .btn-tool,
+.dark-mode .bg-danger > .card-header .btn-tool, .dark-mode .alert-danger > .card-header .btn-tool,
 .dark-mode .bg-gradient-danger > .card-header .btn-tool,
 .dark-mode .card-danger:not(.card-outline) > .card-header .btn-tool {
   color: rgba(255, 255, 255, 0.8); }
-  .dark-mode .bg-danger > .card-header .btn-tool:hover,
+  .dark-mode .bg-danger > .card-header .btn-tool:hover, .dark-mode .alert-danger > .card-header .btn-tool:hover,
   .dark-mode .bg-gradient-danger > .card-header .btn-tool:hover,
   .dark-mode .card-danger:not(.card-outline) > .card-header .btn-tool:hover {
     color: #fff; }
 
-.dark-mode .card.bg-danger .bootstrap-datetimepicker-widget .table td,
+.dark-mode .card.bg-danger .bootstrap-datetimepicker-widget .table td, .dark-mode .card.alert-danger .bootstrap-datetimepicker-widget .table td,
 .dark-mode .card.bg-danger .bootstrap-datetimepicker-widget .table th,
+.dark-mode .card.alert-danger .bootstrap-datetimepicker-widget .table th,
 .dark-mode .card.bg-gradient-danger .bootstrap-datetimepicker-widget .table td,
 .dark-mode .card.bg-gradient-danger .bootstrap-datetimepicker-widget .table th {
   border: none; }
 
-.dark-mode .card.bg-danger .bootstrap-datetimepicker-widget table thead tr:first-child th:hover,
+.dark-mode .card.bg-danger .bootstrap-datetimepicker-widget table thead tr:first-child th:hover, .dark-mode .card.alert-danger .bootstrap-datetimepicker-widget table thead tr:first-child th:hover,
 .dark-mode .card.bg-danger .bootstrap-datetimepicker-widget table td.day:hover,
+.dark-mode .card.alert-danger .bootstrap-datetimepicker-widget table td.day:hover,
 .dark-mode .card.bg-danger .bootstrap-datetimepicker-widget table td.hour:hover,
+.dark-mode .card.alert-danger .bootstrap-datetimepicker-widget table td.hour:hover,
 .dark-mode .card.bg-danger .bootstrap-datetimepicker-widget table td.minute:hover,
+.dark-mode .card.alert-danger .bootstrap-datetimepicker-widget table td.minute:hover,
 .dark-mode .card.bg-danger .bootstrap-datetimepicker-widget table td.second:hover,
+.dark-mode .card.alert-danger .bootstrap-datetimepicker-widget table td.second:hover,
 .dark-mode .card.bg-gradient-danger .bootstrap-datetimepicker-widget table thead tr:first-child th:hover,
 .dark-mode .card.bg-gradient-danger .bootstrap-datetimepicker-widget table td.day:hover,
 .dark-mode .card.bg-gradient-danger .bootstrap-datetimepicker-widget table td.hour:hover,
@@ -22885,12 +22892,13 @@ html.maximized-card {
   background-color: #df2e1b;
   color: #fff; }
 
-.dark-mode .card.bg-danger .bootstrap-datetimepicker-widget table td.today::before,
+.dark-mode .card.bg-danger .bootstrap-datetimepicker-widget table td.today::before, .dark-mode .card.alert-danger .bootstrap-datetimepicker-widget table td.today::before,
 .dark-mode .card.bg-gradient-danger .bootstrap-datetimepicker-widget table td.today::before {
   border-bottom-color: #fff; }
 
-.dark-mode .card.bg-danger .bootstrap-datetimepicker-widget table td.active,
+.dark-mode .card.bg-danger .bootstrap-datetimepicker-widget table td.active, .dark-mode .card.alert-danger .bootstrap-datetimepicker-widget table td.active,
 .dark-mode .card.bg-danger .bootstrap-datetimepicker-widget table td.active:hover,
+.dark-mode .card.alert-danger .bootstrap-datetimepicker-widget table td.active:hover,
 .dark-mode .card.bg-gradient-danger .bootstrap-datetimepicker-widget table td.active,
 .dark-mode .card.bg-gradient-danger .bootstrap-datetimepicker-widget table td.active:hover {
   background-color: #ed7669;
@@ -24200,7 +24208,7 @@ html.maximized-card {
 .modal-content.bg-warning .modal-footer {
   border-color: #343a40; }
 
-.modal-content.bg-primary .close, .modal-content.bg-primary .mailbox-attachment-close, .modal-content.bg-secondary .close, .modal-content.bg-secondary .mailbox-attachment-close, .modal-content.bg-info .close, .modal-content.bg-info .mailbox-attachment-close, .modal-content.bg-danger .close, .modal-content.bg-danger .mailbox-attachment-close, .modal-content.bg-success .close, .modal-content.bg-success .mailbox-attachment-close {
+.modal-content.bg-primary .close, .modal-content.bg-primary .mailbox-attachment-close, .modal-content.bg-secondary .close, .modal-content.bg-secondary .mailbox-attachment-close, .modal-content.bg-info .close, .modal-content.bg-info .mailbox-attachment-close, .modal-content.bg-danger .close, .modal-content.alert-danger .close, .modal-content.bg-danger .mailbox-attachment-close, .modal-content.alert-danger .mailbox-attachment-close, .modal-content.bg-success .close, .modal-content.bg-success .mailbox-attachment-close {
   color: #fff;
   text-shadow: 0 1px 0 #000; }
 
@@ -24219,8 +24227,9 @@ html.maximized-card {
   .dark-mode .modal-content.bg-primary .modal-header,
   .dark-mode .modal-content.bg-primary .modal-footer, .dark-mode .modal-content.bg-secondary .modal-header,
   .dark-mode .modal-content.bg-secondary .modal-footer, .dark-mode .modal-content.bg-info .modal-header,
-  .dark-mode .modal-content.bg-info .modal-footer, .dark-mode .modal-content.bg-danger .modal-header,
-  .dark-mode .modal-content.bg-danger .modal-footer, .dark-mode .modal-content.bg-success .modal-header,
+  .dark-mode .modal-content.bg-info .modal-footer, .dark-mode .modal-content.bg-danger .modal-header, .dark-mode .modal-content.alert-danger .modal-header,
+  .dark-mode .modal-content.bg-danger .modal-footer,
+  .dark-mode .modal-content.alert-danger .modal-footer, .dark-mode .modal-content.bg-success .modal-header,
   .dark-mode .modal-content.bg-success .modal-footer {
     border-color: #fff; }
 
@@ -24299,12 +24308,12 @@ html.maximized-card {
     .dark-mode .toast.bg-warning .toast-header {
       background-color: rgba(243, 156, 18, 0.85);
       color: #1f2d3d; }
-  .dark-mode .toast.bg-danger {
+  .dark-mode .toast.bg-danger, .dark-mode .toast.alert-danger {
     background-color: rgba(231, 76, 60, 0.9) !important; }
-    .dark-mode .toast.bg-danger .close, .dark-mode .toast.bg-danger .mailbox-attachment-close {
+    .dark-mode .toast.bg-danger .close, .dark-mode .toast.alert-danger .close, .dark-mode .toast.bg-danger .mailbox-attachment-close, .dark-mode .toast.alert-danger .mailbox-attachment-close {
       color: #fff;
       text-shadow: 0 1px 0 #000; }
-    .dark-mode .toast.bg-danger .toast-header {
+    .dark-mode .toast.bg-danger .toast-header, .dark-mode .toast.alert-danger .toast-header {
       background-color: rgba(231, 76, 60, 0.85);
       color: #fff; }
   .dark-mode .toast.bg-light {
@@ -24491,12 +24500,12 @@ html.maximized-card {
     background-color: rgba(255, 193, 7, 0.85);
     color: #1f2d3d; }
 
-.toast.bg-danger {
+.toast.bg-danger, .toast.alert-danger {
   background-color: rgba(220, 53, 69, 0.9) !important; }
-  .toast.bg-danger .close, .toast.bg-danger .mailbox-attachment-close {
+  .toast.bg-danger .close, .toast.alert-danger .close, .toast.bg-danger .mailbox-attachment-close, .toast.alert-danger .mailbox-attachment-close {
     color: #fff;
     text-shadow: 0 1px 0 #000; }
-  .toast.bg-danger .toast-header {
+  .toast.bg-danger .toast-header, .toast.alert-danger .toast-header {
     background-color: rgba(220, 53, 69, 0.85);
     color: #fff; }
 
@@ -25727,10 +25736,10 @@ a.close.disabled, a.disabled.mailbox-attachment-close {
     .info-box .info-box .bg-warning .progress-bar,
     .info-box .info-box .bg-gradient-warning .progress-bar {
       background-color: #1f2d3d; }
-  .info-box .info-box .bg-danger,
+  .info-box .info-box .bg-danger, .info-box .info-box .alert-danger,
   .info-box .info-box .bg-gradient-danger {
     color: #fff; }
-    .info-box .info-box .bg-danger .progress-bar,
+    .info-box .info-box .bg-danger .progress-bar, .info-box .info-box .alert-danger .progress-bar,
     .info-box .info-box .bg-gradient-danger .progress-bar {
       background-color: #fff; }
   .info-box .info-box .bg-light,
@@ -25814,10 +25823,10 @@ a.close.disabled, a.disabled.mailbox-attachment-close {
     .dark-mode .info-box .info-box .bg-warning .progress-bar,
     .dark-mode .info-box .info-box .bg-gradient-warning .progress-bar {
       background-color: #1f2d3d; }
-  .dark-mode .info-box .info-box .bg-danger,
+  .dark-mode .info-box .info-box .bg-danger, .dark-mode .info-box .info-box .alert-danger,
   .dark-mode .info-box .info-box .bg-gradient-danger {
     color: #fff; }
-    .dark-mode .info-box .info-box .bg-danger .progress-bar,
+    .dark-mode .info-box .info-box .bg-danger .progress-bar, .dark-mode .info-box .info-box .alert-danger .progress-bar,
     .dark-mode .info-box .info-box .bg-gradient-danger .progress-bar {
       background-color: #fff; }
   .dark-mode .info-box .info-box .bg-light,
@@ -34779,7 +34788,7 @@ blockquote {
 .text-cyan {
   color: #17a2b8 !important; }
 
-.text-white {
+.text-white, .alert-danger {
   color: #fff !important; }
 
 .text-gray {
@@ -34839,7 +34848,7 @@ blockquote {
 .dark-mode .text-cyan {
   color: #3498db !important; }
 
-.dark-mode .text-white {
+.dark-mode .text-white, .dark-mode .alert-danger {
   color: #fff !important; }
 
 .dark-mode .text-gray {
@@ -34931,15 +34940,15 @@ blockquote {
     border-color: #c69500;
     color: #1f2d3d; }
 
-.bg-danger {
+.bg-danger, .alert-danger {
   background-color: #dc3545 !important; }
-  .bg-danger,
-  .bg-danger > a {
+  .bg-danger, .alert-danger,
+  .bg-danger > a, .alert-danger > a {
     color: #fff !important; }
-  .bg-danger.btn:hover {
+  .bg-danger.btn:hover, .btn.alert-danger:hover {
     border-color: #bd2130;
     color: #ececec; }
-  .bg-danger.btn:not(:disabled):not(.disabled):active, .bg-danger.btn:not(:disabled):not(.disabled).active, .bg-danger.btn:active, .bg-danger.btn.active {
+  .bg-danger.btn:not(:disabled):not(.disabled):active, .btn.alert-danger:not(:disabled):not(.disabled):active, .bg-danger.btn:not(:disabled):not(.disabled).active, .btn.alert-danger:not(:disabled):not(.disabled).active, .bg-danger.btn:active, .btn.alert-danger:active, .bg-danger.btn.active, .btn.active.alert-danger {
     background-color: #bd2130 !important;
     border-color: #b21f2d;
     color: #fff; }
@@ -37211,15 +37220,16 @@ a.text-muted:hover {
     border-color: #bc770a;
     color: #fff; }
 
-.dark-mode .bg-danger {
+.dark-mode .bg-danger, .dark-mode .alert-danger {
   background-color: #e74c3c !important; }
-  .dark-mode .bg-danger,
-  .dark-mode .bg-danger > a {
+  .dark-mode .bg-danger, .dark-mode .alert-danger,
+  .dark-mode .bg-danger > a,
+  .dark-mode .alert-danger > a {
     color: #fff !important; }
-  .dark-mode .bg-danger.btn:hover {
+  .dark-mode .bg-danger.btn:hover, .dark-mode .btn.alert-danger:hover {
     border-color: #d62c1a;
     color: #ececec; }
-  .dark-mode .bg-danger.btn:not(:disabled):not(.disabled):active, .dark-mode .bg-danger.btn:not(:disabled):not(.disabled).active, .dark-mode .bg-danger.btn:active, .dark-mode .bg-danger.btn.active {
+  .dark-mode .bg-danger.btn:not(:disabled):not(.disabled):active, .dark-mode .btn.alert-danger:not(:disabled):not(.disabled):active, .dark-mode .bg-danger.btn:not(:disabled):not(.disabled).active, .dark-mode .btn.alert-danger:not(:disabled):not(.disabled).active, .dark-mode .bg-danger.btn:active, .dark-mode .btn.alert-danger:active, .dark-mode .bg-danger.btn.active, .dark-mode .btn.active.alert-danger {
     background-color: #d62c1a !important;
     border-color: #ca2a19;
     color: #fff; }
@@ -39386,3 +39396,8 @@ a.text-muted:hover {
 
 .field-validation-error {
   font-size: smaller; }
+
+.alert-danger ul li::before {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  content: '\f071'; }
