@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MvcStoreData;
 using MvcStoreWeb.Models;
 using System;
 using System.Collections.Generic;
@@ -12,14 +13,23 @@ namespace MvcStoreWeb.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly AppDbContext context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(
+            ILogger<HomeController> logger,
+            AppDbContext context
+            )
         {
             _logger = logger;
+            this.context = context;
         }
 
         public IActionResult Index()
         {
+            ViewBag.Brands = context.Brands.ToList();
+            ViewBag.Categories = context.Categories.ToList();
+            ViewBag.Rayons = context.Rayons.ToList();
+           
             return View();
         }
 

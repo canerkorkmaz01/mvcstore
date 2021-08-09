@@ -1,8 +1,15 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="d-flex flex-wrap">
+    @foreach (var item in ViewBag.Brands as IEnumerable<Brand>)
+    {
+        <div class="border p-4 text-center d-flex flex-column m-2">
+            <img src="@item.Photo" height="120" width="120"/>
+            <span>@item.Name</span>
+        </div>
+
+    }
 </div>

@@ -1,16 +1,27 @@
-﻿@model IPagedList<Brand>
+﻿@model IEnumerable<Brand>
+
 @{
     ViewData["Title"] = "Marka";
+
+
+
 }
 <partial name="ToolButtonsPartial" />
 
 <div class="card">
     <div class="card-body">
+        <div class="py-2 form-inline">
+            <form id="pageSizeForm" method="get" asp-action="Index">
+                <input type="hidden" name="page" value="@ViewContext.HttpContext.Request.Query["page"]" />
+                <partial name="PageSizeMenuPartial" model="@ViewContext.HttpContext.Request.Query["pageSize"].ToString()" />
+            </form>
+        </div>
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Logo</th>
                     <th>Name</th>
+                    <th>Sıralama</th>
                     <th>İşlemler</th>
                 </tr>
             </thead>
@@ -24,11 +35,21 @@
                         <td>
                             @item.Name
                         </td>
+                        <td>
+                            @item.SortOrder
+                            <a asp-action="MoveUp" asp-route-id="@item.Id" class="mx-1">
+                                <i class="fa fa-caret-up"></i>
+                            </a>
+                            <a asp-action="MoveDn" asp-route-id="@item.Id" class="mx-1">
+                                <i class="fa fa-caret-down"></i>
+                            </a>
+
+                        </td>
                         <td class="text-center text-nowrap">
-                            <a asp-action="Edit" asp-route-id="@item.Id">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="mx-1">
                                 <i class="fa fa-edit"></i>
                             </a>
-                            <a asp-action="Remove" asp-route-id="@item.Id">
+                            <a asp-action="Remove" asp-route-id="@item.Id" data-name="@item.Name" class="mx-1 remove-btn">
                                 <i class="fa fa-trash"></i>
                             </a>
                         </td>
@@ -36,6 +57,46 @@
                 }
             </tbody>
         </table>
-        
+        <div class="py-2 d-flex justify-content-center">
+            @Html.PagedListPager(
+            (IPagedList)Model,
+            page => Url.Action("Index", new { page = page, pageSize = ViewContext.HttpContext.Request.Query["pageSize"] }),
+            Extensions.PagedListPagerOptions
+            )
+        </div>
     </div>
 </div>
+
+@section Scripts {
+
+    <script>
+
+        var a = 'yağmurlu';
+        var b = `bu gün hava ${a} olacakmış`;
+
+        $(() => {
+            $('#pageSize').change(function () {
+                $('#pageSizeForm').submit();
+            });
+
+
+            $('.remove-btn').click(function () {
+                var name = $(this).attr("data-name");
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'UYARI',
+                    html: `<strong>"${name}"</strong> isimli kayıt tamamen silinecektir. Silme işlemine devam etmek istiyormusunuz?`,
+                    cancelButtonText: 'İptal',
+                    confirmButtonText: '<i class="fa fa-trash"></i> Sil',
+                    showCancelButton: true
+                }).then(result => {
+                    if (result.value) {
+                        location = $(this).attr('href');
+                    }
+                });
+
+                return false;
+            });
+        });
+    </script>
+}

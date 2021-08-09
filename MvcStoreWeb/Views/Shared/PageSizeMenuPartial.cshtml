@@ -1,0 +1,7 @@
+﻿@model string
+@{
+    var list = new SelectList(new[] { 10, 25, 50, 100 });
+
+}
+<select id="pageSize" name="pageSize" class="custom-select" asp-items="list" asp-for="@Model">
+</select>

@@ -160,7 +160,7 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @await RenderSectionAsync("Scripts", required: false)
 
-    <script>
+<script>
 
             const Toast = Swal.mixin({
                 toast: true,
@@ -185,7 +185,19 @@
                 })
                 </text>
             }
-    </script>
+
+
+
+            @if (TempData["error"] != null)
+            {
+                <text>
+                Toast.fire({
+                    icon: 'error',
+                    title: '@TempData["error"]'
+                })
+                </text>
+            }
+</script>
 
 </body>
 </html>
