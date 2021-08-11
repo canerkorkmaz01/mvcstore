@@ -11,7 +11,7 @@ namespace MvcStoreData
 
         public bool Like { get; set; }
 
-        public Comment Comment { get; set; }
+        public virtual Comment Comment { get; set; }
     }
 
     public class CommentLikeEntityTypeConfiguration : IEntityTypeConfiguration<CommentLike>

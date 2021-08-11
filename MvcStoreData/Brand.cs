@@ -20,7 +20,7 @@ namespace MvcStoreData
         [Display(Name = "Logo")]
         public IFormFile PhotoFile { get; set; }
 
-        public ICollection<Product> Products { get; set; } = new HashSet<Product>();
+        public virtual ICollection<Product> Products { get; set; } = new HashSet<Product>();
 
     }
 

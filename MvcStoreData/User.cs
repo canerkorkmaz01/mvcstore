@@ -16,15 +16,15 @@ namespace MvcStoreData
 
         public Genders Gender { get; set; }
 
-        public ICollection<Brand> Brands { get; set; } = new HashSet<Brand>();
-        public ICollection<Category> Categories { get; set; } = new HashSet<Category>();
-        public ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
-        public ICollection<CommentLike> CommentLikes { get; set; } = new HashSet<CommentLike>();
-        public ICollection<Order> Orders { get; set; } = new HashSet<Order>();
-        public ICollection<OrderItem> OrderItems { get; set; } = new HashSet<OrderItem>();
-        public ICollection<Product> Products { get; set; } = new HashSet<Product>();
-        public ICollection<ProductImage> ProductImages { get; set; } = new HashSet<ProductImage>();
-        public ICollection<Rayon> Rayons { get; set; } = new HashSet<Rayon>();
+        public virtual ICollection<Brand> Brands { get; set; } = new HashSet<Brand>();
+        public virtual ICollection<Category> Categories { get; set; } = new HashSet<Category>();
+        public virtual ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
+        public virtual ICollection<CommentLike> CommentLikes { get; set; } = new HashSet<CommentLike>();
+        public virtual ICollection<Order> Orders { get; set; } = new HashSet<Order>();
+        public virtual ICollection<OrderItem> OrderItems { get; set; } = new HashSet<OrderItem>();
+        public virtual ICollection<Product> Products { get; set; } = new HashSet<Product>();
+        public virtual ICollection<ProductImage> ProductImages { get; set; } = new HashSet<ProductImage>();
+        public virtual ICollection<Rayon> Rayons { get; set; } = new HashSet<Rayon>();
 
 
     }

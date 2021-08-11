@@ -31,6 +31,7 @@ namespace MvcStoreWeb
 
             services.AddDbContext<AppDbContext>(options =>
             {
+                options.UseLazyLoadingProxies();
                 var dataBase = Configuration.GetValue<string>("Application:Database");
                 switch (dataBase)
                 {
@@ -54,6 +55,7 @@ namespace MvcStoreWeb
                             });
                         break;
                 }
+                
             });
 
             services

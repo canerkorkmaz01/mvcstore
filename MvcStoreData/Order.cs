@@ -19,7 +19,7 @@ namespace MvcStoreData
         [NotMapped]
         public decimal GrandTotal => OrderItems.Sum(p => p.LineTotal);
 
-        public ICollection<OrderItem> OrderItems { get; set; } = new HashSet<OrderItem>();
+        public virtual ICollection<OrderItem> OrderItems { get; set; } = new HashSet<OrderItem>();
     }
 
     public class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Order>

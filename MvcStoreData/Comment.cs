@@ -13,9 +13,9 @@ namespace MvcStoreData
 
         public int ProductId { get; set; }
 
-        public Product Product { get; set; }
+        public virtual Product Product { get; set; }
 
-        public ICollection<CommentLike> CommentLikes { get; set; } = new HashSet<CommentLike>();
+        public virtual ICollection<CommentLike> CommentLikes { get; set; } = new HashSet<CommentLike>();
     }
 
 

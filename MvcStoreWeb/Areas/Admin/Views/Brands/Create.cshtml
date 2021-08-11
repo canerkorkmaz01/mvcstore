@@ -1,7 +1,6 @@
 ﻿@model Brand
 @{
     ViewData["Title"] = "Marka Ekleme";
- 
 }
 <div class="card">
     <div class="card-body">
@@ -11,40 +10,56 @@
                 @Html.ValidationSummary()
             </div>
         }
-    <form method="post" enctype="multipart/form-data">
-        <div class="form-row">
-            <div class="col-12 form-group">
-                <label asp-for="Name"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name"></span>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="col-12 form-group">
-                <label asp-for="PhotoFile"></label>
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="PhotoFile" name="PhotoFile" accept="image/*">
-                    <label class="custom-file-label" for="customFile" data-browse="Dosya Seç">dosya seçiniz...</label>
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="col-12 form-group">
+                    <label asp-for="Name"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name"></span>
                 </div>
             </div>
-        </div>
-        <div class="form-row">
-            <div class="col-12 form-group">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" asp-for="Enabled">
-                    <label class="custom-control-label" asp-for="Enabled"></label>
+            <div class="form-row">
+                <div class="col-12 form-group">
+                    <label asp-for="PhotoFile"></label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="PhotoFile" name="PhotoFile" accept="image/*">
+                        <label class="custom-file-label" for="customFile" data-browse="Dosya Seç">dosya seçiniz...</label>
+                    </div>
+                    <img id="PhotoPreview" src="" height="200" class="p-2 my-2 border d-none" />
                 </div>
             </div>
-        </div>
-        <hr />
-        <a class="btn btn-link" asp-action="Index">İptal</a>
-        <button type="submit" class="btn btn-primary">
-            <i class="fa fa-save"></i> Kaydet
-        </button>
-    </form>
+            <div class="form-row">
+                <div class="col-12 form-group">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" asp-for="Enabled">
+                        <label class="custom-control-label" asp-for="Enabled"></label>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <a class="btn btn-link" asp-action="Index">İptal</a>
+            <button type="submit" class="btn btn-primary">
+                <i class="fa fa-save"></i> Kaydet
+            </button>
+        </form>
     </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(() => {
+            $('#PhotoFile').change(function () {
+                var reader = new FileReader();
+                reader.onloadend = function (event) {
+                    $('#PhotoPreview').attr('src', reader.result).removeClass('d-none');
+                    
+                } 
+                reader.readAsDataURL(document.getElementById("PhotoFile").files[0]);
+            });
+           
+        });
+
+
+    </script>
 }

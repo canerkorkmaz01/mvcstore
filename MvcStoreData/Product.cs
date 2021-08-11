@@ -23,15 +23,15 @@ namespace MvcStoreData
 
         public string Photo { get; set; }
 
-        public Brand Brand { get; set; }
+        public virtual Brand Brand { get; set; }
 
-        public ICollection<Category> Categories { get; set; } = new HashSet<Category>();
+        public virtual ICollection<Category> Categories { get; set; } = new HashSet<Category>();
 
-        public ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
+        public virtual ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
 
-        public ICollection<ProductImage> ProductImages { get; set; } = new HashSet<ProductImage>();
+        public virtual ICollection<ProductImage> ProductImages { get; set; } = new HashSet<ProductImage>();
 
-        public ICollection<OrderItem> OrderItems { get; set; } = new HashSet<OrderItem>();
+        public virtual ICollection<OrderItem> OrderItems { get; set; } = new HashSet<OrderItem>();
     }
 
     public class ProductEntityTypeConfiguration : IEntityTypeConfiguration<Product>

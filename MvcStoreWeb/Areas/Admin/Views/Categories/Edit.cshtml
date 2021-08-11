@@ -1,0 +1,58 @@
+﻿@model Category
+@{
+    ViewData["Title"] = "Kategori Güncelleme";
+
+}
+<div class="card">
+    <div class="card-body">
+        @if (!ViewContext.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                @Html.ValidationSummary()
+            </div>
+        }
+    <form method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="UserId" />
+        <input type="hidden" asp-for="DateCreated" />
+        <input type="hidden" asp-for="SortOrder" />
+        <div class="form-row">
+            <div class="col-12 form-group">
+                <label asp-for="RayonId"></label>
+                <select asp-for="RayonId" asp-items="@ViewBag.Rayons" class="custom-select"></select>
+                <span asp-validation-for="RayonId"></span>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-12 form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name"></span>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-12 form-group">
+                <label asp-for="Summary"></label>
+                <textarea asp-for="Summary" class="form-control"></textarea>
+                <span asp-validation-for="Summary"></span>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-12 form-group">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" asp-for="Enabled">
+                    <label class="custom-control-label" asp-for="Enabled"></label>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <a class="btn btn-link" asp-action="Index">İptal</a>
+        <button type="submit" class="btn btn-primary">
+            <i class="fa fa-save"></i> Kaydet
+        </button>
+    </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,7 +1,6 @@
-﻿@model IEnumerable<Brand>
-
+﻿@model IEnumerable<Rayon>
 @{
-    ViewData["Title"] = "Markalar";
+    ViewData["Title"] = "Reyonlar";
 }
 <partial name="ToolButtonsPartial" />
 
@@ -16,8 +15,7 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>@Html.DisplayNameFor(model => model.PhotoFile)</th>
-                    <th>@Html.DisplayNameFor(model=>model.Name)</th>
+                    <th>@Html.DisplayNameFor(model => model.Name)</th>
                     <th>@Html.DisplayNameFor(model => model.SortOrder)</th>
                     <th>İşlemler</th>
                 </tr>
@@ -27,10 +25,8 @@
                 {
                     <tr>
                         <td>
-                            <img src="@item.Photo" height="60" />
-                        </td>
-                        <td>
-                            @item.Name
+                            @item.Name 
+                            <div class="small"><i class="fa fa-cubes"></i> @item.Categories.Count</div>
                         </td>
                         <td>
                             @item.SortOrder

@@ -20,9 +20,9 @@ namespace MvcStoreData
         [NotMapped]
         public decimal LineTotal => Price * Quantity;
 
-        public Order Order { get; set; }
+        public virtual Order Order { get; set; }
 
-        public Product Product { get; set; }
+        public virtual Product Product { get; set; }
     }
 
     public class OrderItemEntityTypeConfiguration : IEntityTypeConfiguration<OrderItem>
