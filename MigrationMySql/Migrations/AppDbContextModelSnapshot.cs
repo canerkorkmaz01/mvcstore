@@ -15,7 +15,7 @@ namespace MigrationMySql.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
-                .HasAnnotation("ProductVersion", "5.0.8");
+                .HasAnnotation("ProductVersion", "5.0.9");
 
             modelBuilder.Entity("CategoryProduct", b =>
                 {
@@ -129,6 +129,48 @@ namespace MigrationMySql.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("MvcStoreData.Banner", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DateFirst")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DateLast")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("Enabled")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .IsUnicode(false)
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Banners");
                 });
 
             modelBuilder.Entity("MvcStoreData.Brand", b =>
@@ -345,6 +387,7 @@ namespace MigrationMySql.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Barcode")
+                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.Property<int?>("BrandId")
@@ -636,6 +679,17 @@ namespace MigrationMySql.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MvcStoreData.Banner", b =>
+                {
+                    b.HasOne("MvcStoreData.User", "User")
+                        .WithMany("Banners")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("MvcStoreData.Brand", b =>
                 {
                     b.HasOne("MvcStoreData.User", "User")
@@ -821,6 +875,8 @@ namespace MigrationMySql.Migrations
 
             modelBuilder.Entity("MvcStoreData.User", b =>
                 {
+                    b.Navigation("Banners");
+
                     b.Navigation("Brands");
 
                     b.Navigation("Categories");

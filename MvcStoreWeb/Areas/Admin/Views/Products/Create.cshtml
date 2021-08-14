@@ -15,7 +15,7 @@
                 <div class="col-12 form-group">
                     <label asp-for="BrandId"></label>
                     <select asp-for="BrandId" asp-items="@ViewBag.Brands" class="custom-select">
-                        <option value="" selected disabled></option>
+                        <option value="" selected>[Marka Yok]</option>
                     </select>
                     <span asp-validation-for="BrandId"></span>
                 </div>

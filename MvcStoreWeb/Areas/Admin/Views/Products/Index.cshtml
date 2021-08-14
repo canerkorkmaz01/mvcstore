@@ -13,11 +13,17 @@
                 <partial name="PageSizeMenuPartial" model="@ViewContext.HttpContext.Request.Query["pageSize"].ToString()" />
             </form>
         </div>
-        <table class="table table-striped">
+        <table class="table table-striped table-bordered">
             <thead>
                 <tr>
                     <th>@Html.DisplayNameFor(model => model.PhotoFile)</th>
-                    <th>@Html.DisplayNameFor(model=>model.Name)</th>
+                    <th>@Html.DisplayNameFor(model => model.Name)</th>
+                    <th>@Html.DisplayNameFor(model => model.Brand.Name)</th>
+                    <th>@Html.DisplayNameFor(model => model.Barcode)</th>
+                    <th>@Html.DisplayNameFor(model => model.DateCreated)</th>
+                    <th>@Html.DisplayNameFor(model => model.User.Name)</th>
+                    <th class="text-right">@Html.DisplayNameFor(model => model.PriceText)</th>
+                    <th class="text-right">@Html.DisplayNameFor(model => model.Discount)</th>
                     <th>İşlemler</th>
                 </tr>
             </thead>
@@ -30,6 +36,28 @@
                         </td>
                         <td>
                             @item.Name
+                            <div class="small">@item.Code</div>
+                            <div class="small">
+                                @string.Join(", ", item.Categories.Select(p => p.Name))
+                            </div>
+                        </td>
+                        <td>
+                            @item.Brand?.Name
+                        </td>
+                        <td>
+                            @item.Barcode
+                        </td>
+                        <td>
+                            @item.DateCreated
+                        </td>
+                        <td>
+                            @item.User.Name
+                        </td>
+                        <td class="text-right text-monospace">
+                            @item.Price.ToString("c2")
+                        </td>
+                        <td class="text-right text-monospace">
+                            @item.Discount
                         </td>
                         <td class="text-center text-nowrap">
                             <partial name="RowButtonsPartial" model="@item" />

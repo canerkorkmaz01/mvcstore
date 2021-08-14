@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace MvcStoreData
 {
@@ -12,6 +13,7 @@ namespace MvcStoreData
     }
     public class User : IdentityUser<int>
     {
+        [Display(Name ="Kaydı Yapan")]
         public string Name { get; set; }
 
         public Genders Gender { get; set; }
@@ -25,7 +27,7 @@ namespace MvcStoreData
         public virtual ICollection<Product> Products { get; set; } = new HashSet<Product>();
         public virtual ICollection<ProductImage> ProductImages { get; set; } = new HashSet<ProductImage>();
         public virtual ICollection<Rayon> Rayons { get; set; } = new HashSet<Rayon>();
-
+        public virtual ICollection<Banner> Banners { get; set; } = new HashSet<Banner>();
 
     }
 
@@ -94,6 +96,13 @@ namespace MvcStoreData
                 .WithOne(p => p.User)
                 .HasForeignKey(p => p.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .HasMany(p => p.Banners)
+                .WithOne(p => p.User)
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }

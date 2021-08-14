@@ -51,7 +51,9 @@ namespace MvcStoreData
 
         [NotMapped]
         public int[] SelectedCategories { get; set; }
-
+        
+        [NotMapped]
+        public int[] PicturesToDeleted { get; set; }
 
         [NotMapped]
         [Display(Name = "Foto Galeri")]

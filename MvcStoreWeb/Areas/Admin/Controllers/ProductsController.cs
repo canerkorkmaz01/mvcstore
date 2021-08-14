@@ -7,7 +7,6 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Processing;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -58,7 +57,7 @@ namespace MvcStoreWeb.Areas.Admin.Controllers
                     context.Categories.Attach(category);
                     model.Categories.Add(category);
                 });
-                
+
             }
 
             if (model.PhotoFile != null)
@@ -92,44 +91,47 @@ namespace MvcStoreWeb.Areas.Admin.Controllers
                 return View(model);
             }
 
-            foreach (var photoFile in model.PhotoFiles)
-            {
-                try
+            if (model.PhotoFiles != null)
+                foreach (var photoFile in model.PhotoFiles)
                 {
-                    using (var image = Image.Load(photoFile.OpenReadStream()))
+                    try
                     {
-                        image.Mutate(p =>
+                        using (var image = Image.Load(photoFile.OpenReadStream()))
                         {
-                            p.Resize(new ResizeOptions
+                            image.Mutate(p =>
                             {
-                                Mode = ResizeMode.Max,
-                                Size = new Size(600, 600)
+                                p.Resize(new ResizeOptions
+                                {
+                                    Mode = ResizeMode.Max,
+                                    Size = new Size(600, 600)
+                                });
+                                p.BackgroundColor(Color.White);
+                                var photo = new ProductImage
+                                {
+                                    UserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value),
+                                    Enabled = true,
+                                    DateCreated = DateTime.Now,
+                                    Photo = image.ToBase64String(JpegFormat.Instance)
+                                };
+                                context.Entry(photo).State = EntityState.Added;
+                                model.ProductImages.Add(photo);
                             });
-                            p.BackgroundColor(Color.White);
-                            var photo = new ProductImage
-                            {
-                                UserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value),
-                                Enabled = true,
-                                DateCreated = DateTime.Now,
-                                Photo = image.ToBase64String(JpegFormat.Instance)
-                            };
-                            context.Entry(photo).State = EntityState.Added;
-                            model.ProductImages.Add(photo);
-                        });
+                        }
+                    }
+                    catch (UnknownImageFormatException)
+                    {
+
                     }
                 }
-                catch (UnknownImageFormatException)
-                {
-
-                }
-            }
 
             model.DateCreated = DateTime.Now;
             model.UserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
             context.Entry(model).State = EntityState.Added;
+
             try
             {
+
                 await context.SaveChangesAsync();
                 TempData["success"] = $"{entityName} ekleme işlemi başarıyla tamamlanmıştır.";
                 return RedirectToAction("Index");
@@ -146,7 +148,7 @@ namespace MvcStoreWeb.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var model = await context.Products.FindAsync(id);
-            model.PriceText = model.Price.ToString(CultureInfo.CreateSpecificCulture("tr-TR"));
+            model.PriceText = model.Price.ToString("f2", CultureInfo.CreateSpecificCulture("tr-TR"));
             FillDropdowns();
             return View(model);
         }
@@ -154,6 +156,27 @@ namespace MvcStoreWeb.Areas.Admin.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Product model)
         {
+
+
+            var original = await context.Products.FindAsync(model.Id);
+
+            model.Price = decimal.Parse(model.PriceText, CultureInfo.CreateSpecificCulture("tr-TR"));
+
+            var categoryIds = (await context.Products.FindAsync(model.Id)).Categories.Select(p => p.Id).ToList();
+            var categories = await context.Categories.ToListAsync();
+
+            if (model.SelectedCategories != null)
+            {
+                model.SelectedCategories
+                    .Except(categoryIds).ToList()
+                    .ForEach(p => original.Categories.Add(categories.Single(q => q.Id == p)));
+
+                categoryIds
+                    .Except(model.SelectedCategories)
+                    .ToList()
+                    .ForEach(p => original.Categories.Remove(categories.Single(q => q.Id == p)));
+            }
+
             if (model.PhotoFile != null)
             {
                 try
@@ -180,7 +203,50 @@ namespace MvcStoreWeb.Areas.Admin.Controllers
                 }
             }
 
-            context.Entry(model).State = EntityState.Modified;
+            if (model.PhotoFiles != null)
+                foreach (var photoFile in model.PhotoFiles)
+                {
+                    try
+                    {
+                        using (var image = Image.Load(photoFile.OpenReadStream()))
+                        {
+                            image.Mutate(p =>
+                            {
+                                p.Resize(new ResizeOptions
+                                {
+                                    Mode = ResizeMode.Max,
+                                    Size = new Size(600, 600)
+                                });
+                                p.BackgroundColor(Color.White);
+                                var photo = new ProductImage
+                                {
+                                    UserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value),
+                                    Enabled = true,
+                                    DateCreated = DateTime.Now,
+                                    Photo = image.ToBase64String(JpegFormat.Instance)
+                                };
+                                context.Entry(photo).State = EntityState.Added;
+                                original.ProductImages.Add(photo);
+                            });
+                        }
+                    }
+                    catch (UnknownImageFormatException)
+                    {
+
+                    }
+                }
+
+            if (model.PicturesToDeleted != null)
+            {
+                foreach (var photoFileId in model.PicturesToDeleted)
+                {
+                    var image = original.ProductImages.SingleOrDefault(p => p.Id == photoFileId);
+                    if (image != null)
+                        context.Entry(image).State = EntityState.Deleted;
+                }
+            }
+
+            context.Entry(original).CurrentValues.SetValues(model);
 
             try
             {
@@ -188,9 +254,10 @@ namespace MvcStoreWeb.Areas.Admin.Controllers
                 TempData["success"] = $"{entityName} güncelleme işlemi başarıyla tamamlanmıştır.";
                 return RedirectToAction("Index");
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException ex)
             {
                 TempData["error"] = $"{entityName} güncelleme işlemi aynı isimli bir kayıt olduğu için tamamlanamıyor.";
+                FillDropdowns();
                 return View(model);
             }
         }

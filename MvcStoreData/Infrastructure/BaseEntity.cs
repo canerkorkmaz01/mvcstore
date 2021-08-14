@@ -9,6 +9,7 @@ namespace MvcStoreData.Infrastructure
 
         public virtual int UserId { get; set; }
 
+        [Display(Name ="Kayıt T.")]
         public virtual DateTime DateCreated { get; set; }
 
         [Display(Name = "Aktif")]

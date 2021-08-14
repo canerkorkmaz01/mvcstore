@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Brand>
+﻿@model IEnumerable<Banner>
 
 @{
     ViewData["Title"] = "Markalar";
@@ -17,7 +17,8 @@
             <thead>
                 <tr>
                     <th>@Html.DisplayNameFor(model => model.PhotoFile)</th>
-                    <th>@Html.DisplayNameFor(model => model.Name)</th>
+                    <th>@Html.DisplayNameFor(model => model.DateFirst)</th>
+                    <th>@Html.DisplayNameFor(model => model.DateLast)</th>
                     <th>@Html.DisplayNameFor(model => model.DateCreated)</th>
                     <th>@Html.DisplayNameFor(model => model.User.Name)</th>
                     <th>@Html.DisplayNameFor(model => model.SortOrder)</th>
@@ -27,33 +28,36 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>
-                            <img src="@item.Photo" height="60" />
-                        </td>
-                        <td>
-                            @item.Name
-                        </td>
-                        <td>
-                            @item.DateCreated
-                        </td>
-                        <td>
-                            @item.User.Name
-                        </td>
-                        <td>
-                            @item.SortOrder
-                            <a asp-action="MoveUp" asp-route-id="@item.Id" class="mx-1">
-                                <i class="fa fa-caret-up"></i>
-                            </a>
-                            <a asp-action="MoveDn" asp-route-id="@item.Id" class="mx-1">
-                                <i class="fa fa-caret-down"></i>
-                            </a>
+                <tr>
+                    <td>
+                        <img src="@item.Image" height="60" />
+                    </td>
+                    <td>
+                        @item.DateFirst
+                    </td>
+                    <td>
+                        @item.DateLast
+                    </td>
+                    <td>
+                        @item.DateCreated
+                    </td>
+                    <td>
+                        @item.User.Name
+                    </td>
+                    <td>
+                        @item.SortOrder
+                        <a asp-action="MoveUp" asp-route-id="@item.Id" class="mx-1">
+                            <i class="fa fa-caret-up"></i>
+                        </a>
+                        <a asp-action="MoveDn" asp-route-id="@item.Id" class="mx-1">
+                            <i class="fa fa-caret-down"></i>
+                        </a>
 
-                        </td>
-                        <td class="text-center text-nowrap">
-                            <partial name="RowButtonsPartial" model="@item" />
-                        </td>
-                    </tr>
+                    </td>
+                    <td class="text-center text-nowrap">
+                        <partial name="RowButtonsPartial" model="@item" />
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>
@@ -70,10 +74,6 @@
 @section Scripts {
 
     <script>
-
-        var a = 'yağmurlu';
-        var b = `bu gün hava ${a} olacakmış`;
-
         $(() => {
             $('#pageSize').change(function () {
                 $('#pageSizeForm').submit();

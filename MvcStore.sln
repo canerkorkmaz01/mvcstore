@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcStoreWeb", "MvcStoreWeb\MvcStoreWeb.csproj", "{A9C80A0C-4AFB-4826-8C7E-56EDA2D2CA18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcStoreWeb", "MvcStoreWeb\MvcStoreWeb.csproj", "{A9C80A0C-4AFB-4826-8C7E-56EDA2D2CA18}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcStoreData", "MvcStoreData\MvcStoreData.csproj", "{058F9787-F8E5-4A34-AD21-F2754288D959}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcStoreData", "MvcStoreData\MvcStoreData.csproj", "{058F9787-F8E5-4A34-AD21-F2754288D959}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Migrations", "Migrations", "{D4E12D04-C43D-4D2D-99E2-10E7E8ADD06A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MigrationSqlServer", "MigrationSqlServer\MigrationSqlServer.csproj", "{1DCF63FC-87B2-428A-A34C-AEE36EAE1259}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MigrationSqlServer", "MigrationSqlServer\MigrationSqlServer.csproj", "{1DCF63FC-87B2-428A-A34C-AEE36EAE1259}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MigrationMySql", "MigrationMySql\MigrationMySql.csproj", "{15E44BE0-5B5D-4CE5-8826-025B79EA458E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MigrationMySql", "MigrationMySql\MigrationMySql.csproj", "{15E44BE0-5B5D-4CE5-8826-025B79EA458E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcStoreApi", "MvcStoreApi\MvcStoreApi.csproj", "{7E8979DF-4629-4CB9-B595-BAC817B54E9F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{15E44BE0-5B5D-4CE5-8826-025B79EA458E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15E44BE0-5B5D-4CE5-8826-025B79EA458E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15E44BE0-5B5D-4CE5-8826-025B79EA458E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E8979DF-4629-4CB9-B595-BAC817B54E9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E8979DF-4629-4CB9-B595-BAC817B54E9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E8979DF-4629-4CB9-B595-BAC817B54E9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E8979DF-4629-4CB9-B595-BAC817B54E9F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
