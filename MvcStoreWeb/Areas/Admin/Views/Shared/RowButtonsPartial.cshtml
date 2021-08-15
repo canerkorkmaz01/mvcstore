@@ -2,6 +2,7 @@
 <a asp-action="Edit" asp-route-id="@Model.Id" class="mx-1">
     <i class="fa fa-edit"></i>
 </a>
-<a asp-action="Remove" asp-route-id="@Model.Id" data-name="@Model.Name" class="mx-1 remove-btn">
+
+<a asp-action="Remove" asp-route-id="@Model.Id" data-name="@(Model.Name)" class="mx-1 remove-btn">
     <i class="fa fa-trash"></i>
 </a>

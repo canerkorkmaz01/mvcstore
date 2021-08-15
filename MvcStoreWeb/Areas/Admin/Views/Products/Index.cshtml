@@ -21,6 +21,7 @@
                     <th>@Html.DisplayNameFor(model => model.Brand.Name)</th>
                     <th>@Html.DisplayNameFor(model => model.Barcode)</th>
                     <th>@Html.DisplayNameFor(model => model.DateCreated)</th>
+                    <th>@Html.DisplayNameFor(model => model.Enabled)</th>
                     <th>@Html.DisplayNameFor(model => model.User.Name)</th>
                     <th class="text-right">@Html.DisplayNameFor(model => model.PriceText)</th>
                     <th class="text-right">@Html.DisplayNameFor(model => model.Discount)</th>
@@ -49,6 +50,9 @@
                         </td>
                         <td>
                             @item.DateCreated
+                        </td>
+                        <td>
+                            <partial name="EnabledIconPartial" model="@item.Enabled" />
                         </td>
                         <td>
                             @item.User.Name

@@ -115,6 +115,36 @@
     {
       "library": "sweetalert@2.1.2",
       "destination": "wwwroot/lib/sweetalert/"
+    },
+    {
+      "library": "bootstrap-datepicker@1.9.0",
+      "destination": "wwwroot/lib/bootstrap-datepicker/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "nivo-slider@3.2.0",
+      "destination": "wwwroot/lib/nivo-slider/",
+      "files": [
+        "nivo-slider.css",
+        "jquery.nivo.slider.js",
+        "jquery.nivo.slider.pack.js",
+        "themes/bar/arrows.png",
+        "themes/bar/bar.css",
+        "themes/bar/bullets.png",
+        "themes/bar/loading.gif",
+        "themes/dark/arrows.png",
+        "themes/dark/bullets.png",
+        "themes/dark/dark.css",
+        "themes/dark/loading.gif",
+        "themes/default/arrows.png",
+        "themes/default/bullets.png",
+        "themes/default/default.css",
+        "themes/default/loading.gif",
+        "themes/light/arrows.png",
+        "themes/light/bullets.png",
+        "themes/light/light.css",
+        "themes/light/loading.gif"
+      ]
     }
   ]
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MvcStoreData;
 using MvcStoreWeb.Models;
@@ -24,12 +25,9 @@ namespace MvcStoreWeb.Controllers
             this.context = context;
         }
 
-        public IActionResult Index()
+        public async Task< IActionResult> Index()
         {
-            ViewBag.Brands = context.Brands.ToList();
-            ViewBag.Categories = context.Categories.ToList();
-            ViewBag.Rayons = context.Rayons.ToList();
-           
+            ViewBag.Products = await context.Products.OrderBy(p => Guid.NewGuid()).Take(12).ToListAsync();
             return View();
         }
 

@@ -3,13 +3,21 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="d-flex flex-wrap">
-    @foreach (var item in ViewBag.Brands as IEnumerable<Brand>)
-    {
-        <div class="border p-4 text-center d-flex flex-column m-2">
-            <img src="@item.Photo" height="120" width="120"/>
-            <span>@item.Name</span>
-        </div>
+@await Component.InvokeAsync("NivoSlider")
 
-    }
-</div>
+<hr />
+
+<partial name="ProductTilesPartial" model="ViewBag.Products" />
+
+@section Scripts {
+
+    <script src="~/lib/nivo-slider/jquery.nivo.slider.pack.js"></script>
+    <link href="~/lib/nivo-slider/nivo-slider.css" rel="stylesheet" />
+    <link href="~/lib/nivo-slider/themes/default/default.css" rel="stylesheet" />
+    <script>
+        $(() => {
+            $('.nivoSlider').nivoSlider();
+        });
+    </script>
+
+}

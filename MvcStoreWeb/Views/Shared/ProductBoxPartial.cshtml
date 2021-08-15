@@ -1,0 +1,23 @@
+﻿@model Product
+<div class="col">
+    <div class="card bg-white shadow-sm">
+        <img class="card-img-top" src="@Model.Photo" alt="@Model.Name" />
+        <div class="card-body">
+            <div class="card-title">
+                @Model.Name
+            </div>
+            <div class="card-text">
+                @if (Model.Discount > 0)
+                {
+                    <div class="small text-secondary" style="text-decoration: line-through">
+                        @Model.Price.ToString("c2")
+                    </div>
+                    <div class="text-success h4">
+                        @Model.DiscountedPrice.ToString("c2")
+                    </div>
+                    <span>(% @Model.Discount indirim)</span>
+                }
+            </div>
+        </div>
+    </div>
+</div>

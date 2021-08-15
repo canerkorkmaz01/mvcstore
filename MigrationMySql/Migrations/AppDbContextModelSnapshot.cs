@@ -157,6 +157,9 @@ namespace MigrationMySql.Migrations
                     b.Property<bool>("IsDefault")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
                     b.Property<int>("SortOrder")
                         .HasColumnType("int");
 

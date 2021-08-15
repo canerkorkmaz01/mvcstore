@@ -1,40 +1,43 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace MigrationSqlServer.Migrations
+namespace MigrationMySql.Migrations
 {
     public partial class Banner : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropIndex(
-                name: "IX_Products_Barcode",
-                table: "Products");
-
             migrationBuilder.AlterColumn<string>(
                 name: "Barcode",
                 table: "Products",
-                type: "nvarchar(450)",
+                type: "varchar(255)",
                 nullable: false,
                 defaultValue: "",
                 oldClrType: typeof(string),
-                oldType: "nvarchar(450)",
-                oldNullable: true);
+                oldType: "varchar(255)",
+                oldNullable: true)
+                .Annotation("MySql:CharSet", "utf8mb4")
+                .OldAnnotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "Banners",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Image = table.Column<string>(type: "varchar(max)", unicode: false, nullable: false),
-                    DateFirst = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DateLast = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDefault = table.Column<bool>(type: "bit", nullable: false),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Image = table.Column<string>(type: "longtext", unicode: false, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    DateFirst = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    DateLast = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    Url = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    IsDefault = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Enabled = table.Column<bool>(type: "bit", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Enabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     SortOrder = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -46,13 +49,8 @@ namespace MigrationSqlServer.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_Barcode",
-                table: "Products",
-                column: "Barcode",
-                unique: true);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Banners_UserId",
@@ -65,24 +63,15 @@ namespace MigrationSqlServer.Migrations
             migrationBuilder.DropTable(
                 name: "Banners");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Products_Barcode",
-                table: "Products");
-
             migrationBuilder.AlterColumn<string>(
                 name: "Barcode",
                 table: "Products",
-                type: "nvarchar(450)",
+                type: "varchar(255)",
                 nullable: true,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(450)");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_Barcode",
-                table: "Products",
-                column: "Barcode",
-                unique: true,
-                filter: "[Barcode] IS NOT NULL");
+                oldType: "varchar(255)")
+                .Annotation("MySql:CharSet", "utf8mb4")
+                .OldAnnotation("MySql:CharSet", "utf8mb4");
         }
     }
 }

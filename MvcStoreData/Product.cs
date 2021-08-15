@@ -59,6 +59,8 @@ namespace MvcStoreData
         [Display(Name = "Foto Galeri")]
         public IFormFile[] PhotoFiles { get; set; }
 
+        [NotMapped]
+        public decimal DiscountedPrice => Price - (Price * Discount / 100m);
 
         public virtual Brand Brand { get; set; }
 

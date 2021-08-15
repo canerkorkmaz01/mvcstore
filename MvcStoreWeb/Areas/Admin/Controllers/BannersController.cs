@@ -45,6 +45,7 @@ namespace MvcStoreWeb.Areas.Admin.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Banner model)
         {
+            model.Name = model.PhotoFile.FileName;
             if (model.PhotoFile != null)
             {
                 try
@@ -55,7 +56,7 @@ namespace MvcStoreWeb.Areas.Admin.Controllers
                         {
                             p.Resize(new ResizeOptions
                             {
-                                Mode = ResizeMode.Max,
+                                Mode = ResizeMode.Stretch,
                                 Size = new Size(1400, 480)
                             });
                             p.BackgroundColor(Color.White);
@@ -104,8 +105,6 @@ namespace MvcStoreWeb.Areas.Admin.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Banner model)
         {
-            var original = await context.Banners.FindAsync(model.Id);
-
             if (model.PhotoFile != null)
             {
                 try
@@ -116,11 +115,11 @@ namespace MvcStoreWeb.Areas.Admin.Controllers
                         {
                             p.Resize(new ResizeOptions
                             {
-                                Mode = ResizeMode.Max,
-                                Size = new Size(600, 600)
+                                Mode = ResizeMode.Stretch,
+                                Size = new Size(1400, 480)
                             });
                             p.BackgroundColor(Color.White);
-                            original.Image = image.ToBase64String(JpegFormat.Instance);
+                            model.Image = image.ToBase64String(JpegFormat.Instance);
                         });
                     }
                 }
@@ -131,8 +130,7 @@ namespace MvcStoreWeb.Areas.Admin.Controllers
                 }
             }
 
-            //context.Entry(model).State = EntityState.Modified;
-            context.Entry(original).CurrentValues.SetValues(model);
+            context.Entry(model).State = EntityState.Modified;
 
             try
             {

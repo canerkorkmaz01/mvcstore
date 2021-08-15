@@ -1,0 +1,22 @@
+﻿@model IEnumerable<Banner>
+@if (Model.Any())
+{
+    <div class="slider-wrapper theme-default">
+        <div id="slider" class="nivoSlider">
+            @foreach (var banner in Model)
+            {
+                if (string.IsNullOrEmpty(banner.Url))
+                {
+                    <img src="@banner.Image" data-thumb="@banner.Image" alt="" />
+                }
+                else
+                {
+                    <a href="@banner.Url">
+                        <img src="@banner.Image" data-thumb="@banner.Image" alt="" />
+                    </a>
+                }
+            }
+        </div>
+    </div>
+
+}

@@ -10,8 +10,8 @@ using MvcStoreData;
 namespace MigrationSqlServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210814145024_Banner")]
-    partial class Banner
+    [Migration("20210815152051_Banners")]
+    partial class Banners
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -163,6 +163,9 @@ namespace MigrationSqlServer.Migrations
 
                     b.Property<bool>("IsDefault")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("int");

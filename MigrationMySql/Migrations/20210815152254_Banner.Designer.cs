@@ -9,7 +9,7 @@ using MvcStoreData;
 namespace MigrationMySql.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210814145125_Banner")]
+    [Migration("20210815152254_Banner")]
     partial class Banner
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -158,6 +158,9 @@ namespace MigrationMySql.Migrations
 
                     b.Property<bool>("IsDefault")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("int");

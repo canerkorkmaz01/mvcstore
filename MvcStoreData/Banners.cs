@@ -10,10 +10,16 @@ namespace MvcStoreData
 {
     public class Banner : SortableBaseEntity
     {
+        public string Name { get; set; }
+
         public string Image { get; set; }
 
+        [Display(Name = "İlk T.")]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateFirst { get; set; }
 
+        [Display(Name = "Son T.")]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateLast { get; set; }
 
         public string Url { get; set; }
