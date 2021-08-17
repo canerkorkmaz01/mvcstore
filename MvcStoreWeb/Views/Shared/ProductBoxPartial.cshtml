@@ -3,10 +3,10 @@
     <div class="card bg-white shadow-sm">
         <img class="card-img-top" src="@Model.Photo" alt="@Model.Name" />
         <div class="card-body">
-            <div class="card-title">
+            <div class="card-title" style="overflow: hidden; height: 46px;" data-toggle="tooltip" data-placement="top" title="@Model.Name">
                 @Model.Name
             </div>
-            <div class="card-text">
+            <div class="card-text" style="height: 64px;">
                 @if (Model.Discount > 0)
                 {
                     <div class="small text-secondary" style="text-decoration: line-through">
@@ -17,6 +17,21 @@
                     </div>
                     <span>(% @Model.Discount indirim)</span>
                 }
+                else
+                {
+                    <div class="text-success h4">
+                        @Model.Price.ToString("c2")
+                    </div>
+                }
+            </div>
+            <div class="card-text text-center py-2">
+                <a class="btn btn-primary" asp-route="product" asp-route-id="@Model.Id" asp-route-name="@Model.Name.ToSafeUrlString()">
+                    <i class="fa fa-search"></i> İncele
+                </a>
+                <a class="btn btn-success" asp-route="product" asp-route-id="@Model.Id" asp-route-name="@Model.Name.ToSafeUrlString()">
+                    <i class="fa fa-heart"></i>
+                </a>
+
             </div>
         </div>
     </div>

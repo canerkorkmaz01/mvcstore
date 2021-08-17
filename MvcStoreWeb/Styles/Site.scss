@@ -1,11 +1,11 @@
 ﻿$primary: #0068c1;
 
 $enable-rounded: false;
-$font-size-base : .85rem;
+$font-size-base: .85rem;
 
 @import "bootstrap/scss/bootstrap.scss";
 
-$fa-font-path : '/css/webfonts';
+$fa-font-path: '/css/webfonts';
 
 @import "fortawesome/fontawesome-free/scss/fontawesome.scss";
 @import "fortawesome/fontawesome-free/scss/solid.scss";
@@ -24,7 +24,6 @@ $fa-font-path : '/css/webfonts';
 .alert-danger {
     @extend .bg-danger;
     @extend .text-white;
-    
 }
 
 .alert-danger ul {
@@ -38,3 +37,4 @@ $fa-font-path : '/css/webfonts';
     font-weight: 900;
     content: '\f071';
 }
+

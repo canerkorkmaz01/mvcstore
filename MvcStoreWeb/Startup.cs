@@ -97,7 +97,18 @@ namespace MvcStoreWeb
 
             app.UseEndpoints(endpoints =>
             {
-                
+
+
+                endpoints.MapControllerRoute(
+                    name: "category",
+                    pattern: "{name}-c-{id}.html",
+                    defaults: new { controller = "Home", action = "Category" });
+
+                endpoints.MapControllerRoute(
+                    name: "product",
+                    pattern: "{name}-p-{id}.html",
+                    defaults: new { controller = "Home", action = "Product" });
+
                 endpoints.MapControllerRoute(
                     name: "areas",
                     pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");

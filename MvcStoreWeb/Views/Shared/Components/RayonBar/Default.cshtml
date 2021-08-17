@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Rayon>
+@{
+}
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#rayonBar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="rayonBar">
+        <ul class="navbar-nav mr-auto ml-auto">
+            @foreach (var rayon in Model)
+            {
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        @rayon.Name
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        @foreach (var category in rayon.Categories.Where(p => p.Enabled).OrderBy(p => p.SortOrder))
+                        {
+                            <a class="dropdown-item" asp-route="category" asp-route-id="@category.Id" asp-route-name="@category.Name.ToSafeUrlString()">@category.Name</a>
+                        }
+                    </div>
+                </li>
+            }
+
+        </ul>
+    </div>
+</nav>

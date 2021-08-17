@@ -31,6 +31,17 @@ namespace MvcStoreWeb.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Category(int id)
+        {
+            var model = await context.Categories.FindAsync(id);
+            return View(model);
+        }
+        public async Task<IActionResult> Product(int id)
+        {
+            var model = await context.Products.FindAsync(id);
+            return View(model);
+        }
+
         public IActionResult Privacy()
         {
             return View();
