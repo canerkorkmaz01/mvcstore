@@ -5,6 +5,7 @@ using MvcStoreWeb.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace MvcStoreWeb.Controllers
@@ -42,7 +43,7 @@ namespace MvcStoreWeb.Controllers
                 ModelState.AddModelError("", "Geçersiz kullanıcı girişi");
                 return View(model);
             }
-            
+
         }
 
         public async Task<IActionResult> Logout()
@@ -50,5 +51,44 @@ namespace MvcStoreWeb.Controllers
             await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+
+            var newUser = new User
+            {
+                UserName = model.Email,
+                Name = model.Name,
+                Email = model.Email,
+                Gender = model.Gender,
+                EmailConfirmed = false
+            };
+
+            var result = await userManager.CreateAsync(newUser, model.Password);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+                return View(model);
+            }
+            else
+            {
+                await userManager.AddClaimAsync(newUser, new Claim("", newUser.Name));
+                await userManager.AddToRoleAsync(newUser, "Members");
+                return View("RegisterSuccess");
+            }
+
+        }
+
+
     }
 }

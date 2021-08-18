@@ -1,0 +1,97 @@
+﻿@model Product
+@{
+    ViewData["title"] = Model.Name;
+}
+
+<div class="row">
+    <div class="col-12 col-md-6 p-2">
+        <img src="@Model.Photo" class="img-thumbnail" />
+    </div>
+    <div class="col-12 col-md-6 p-2">
+        @if (Model.BrandId != null)
+        {
+            <div class="text-right p-2">
+                <img src="@Model.Brand.Photo" width="64" height="64" data-toggle="tooltip" title="@Model.Brand.Name" />
+            </div>
+        }
+        <h4>@Model.Name</h4>
+
+        @if (Model.Discount > 0)
+        {
+
+            <div class="d-flex align-content-center py-2">
+                <div class="text-white bg-danger p-3 h3">
+                    %@Model.Discount
+                </div>
+                <div class="flex-fill">
+                    <div class="small text-secondary px-2">@Model.Price.ToString("c2")</div>
+                    <div class="text-success h2 px-2">
+                        @Model.DiscountedPrice.ToString("c2")
+                    </div>
+                </div>
+            </div>
+
+        }
+        else
+        {
+            <div class="text-success h2 px-2">
+                @Model.Price.ToString("c2")
+            </div>
+        }
+        <div class="py-2">
+            <form novalidate class="form-inline">
+                <input type="hidden" name="Id" value="@Model.Id" />
+                <button id="decrease" class="btn btn-outline-secondary" type="button">
+                    <i class="fa fa-minus"></i>
+                </button>
+                <input id="quantity" name="Quantity" type="text" class="form-control text-center" style="width:46px" value="1" />
+                <button id="increase" class="btn btn-outline-secondary" type="button">
+                    <i class="fa fa-plus"></i>
+                </button>
+                <button type="submit" class="btn btn-success">
+                    <i class="fa fa-shopping-cart"></i> Sepete Ekle
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(() => {
+            $('#decrease').click(decrease);
+            $('#increase').click(increase);
+
+            $('#quantity').keydown(function (e) {
+                var isNumber = /^\d+$/.test(e.originalEvent.key);
+                
+                if (e.originalEvent.keyCode != 8 && !isNumber) {
+                    e.preventDefault();
+                    return;
+                }
+            });
+
+            $('#quantity').change(function (e) {
+                const v = $(e.currentTarget).val();
+                if (v == null || v == '') {
+                    $(e.currentTarget).val(1);
+                }
+            });
+
+            function decrease(e) {
+                var v = $('#quantity').val();
+                if (v > 1) {
+                    v--;
+                    $('#quantity').val(v);
+                }
+
+            }
+
+            function increase(e) {
+                var v = $('#quantity').val();
+                v++;
+                $('#quantity').val(v);
+            }
+        });
+    </script>
+}

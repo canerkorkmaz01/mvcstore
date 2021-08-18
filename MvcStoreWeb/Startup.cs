@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MvcStoreData;
+using MvcStoreWeb.Sys;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,9 +70,10 @@ namespace MvcStoreWeb
 
                     options.Lockout.MaxFailedAccessAttempts = Configuration.GetValue<int>("Application:Lockout:MaxFailedAccessAttempts");
                     options.Lockout.DefaultLockoutTimeSpan = Configuration.GetValue<TimeSpan>("Application:Lockout:DefaultLockoutTimeSpan");
+                    
                 })
-                .AddEntityFrameworkStores<AppDbContext>();
-
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddErrorDescriber<MvcStoreIdentityErrorDescriber>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -148,7 +150,8 @@ namespace MvcStoreWeb
                     Email = Configuration.GetValue<string>("Application:DefaultAdmin:UserName"),
                     EmailConfirmed = true
                 };
-                userManager.AddClaimAsync(newUser, new Claim(ClaimTypes.Name, newUser.Name)).Wait();
+                userManager.AddClaimAsync(newUser, new Claim("FullName", newUser.Name)).Wait();
+
                 userManager.CreateAsync(newUser, Configuration.GetValue<string>("Application:DefaultAdmin:Password")).Wait();
                 userManager.AddToRoleAsync(newUser, "Administrators").Wait();
             }

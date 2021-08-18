@@ -7,9 +7,15 @@ using System.ComponentModel.DataAnnotations;
 namespace MvcStoreData
 {
 
+
     public enum Genders
     {
-        Male, Female, Unspecified
+        [Display(Name = "Bay")]
+        Male, 
+        [Display(Name = "Bayan")] 
+        Female, 
+        [Display(Name = "Belirtilmemiş")]
+        Unspecified
     }
     public class User : IdentityUser<int>
     {

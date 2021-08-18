@@ -1,0 +1,55 @@
+﻿@model RegisterViewModel
+
+@{
+    ViewData["title"] = "Yeni Üyelik";
+}
+<form id="Register" asp-action="Register" method="post" autocomplete="off" class="mt-4">
+    <div class="d-flex justify-content-center">
+        <div class="d-none d-md-inline-block">
+            <img src="~/content/images/register.jpg" width="320" height="600" />
+        </div>
+        <div class="bg-light d-inline-block p-5 w-50 d-flex flex-column">
+            @if (!ViewContext.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    @Html.ValidationSummary()
+                </div>
+            }
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input class="form-control" asp-for="Email" placeholder="e-posta adresinizi yazınız..." autocomplete="off" />
+                <span asp-validation-for="Email"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input class="form-control" asp-for="Name" placeholder="adınızı yazınız..." autocomplete="off" />
+                <span asp-validation-for="Name"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input class="form-control" asp-for="Password" placeholder="parolanızı yazınız..." autocomplete="off" />
+                <span asp-validation-for="Password"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PasswordConfirm"></label>
+                <input class="form-control" asp-for="PasswordConfirm" placeholder="parolanızı tekrar yazınız..." autocomplete="off" />
+                <span asp-validation-for="PasswordConfirm"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gender"></label>
+                <select asp-for="Gender" asp-items="@Html.GetEnumSelectList<Genders>()" class="custom-select"></select>
+                <span asp-validation-for="Gender"></span>
+            </div>
+            <button type="submit" class="btn btn-block btn-primary mt-auto">
+                <i class="fa fa-user-plus"></i>
+                Kaydol
+            </button>
+        </div>
+    </div>
+</form>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace MvcStoreWeb.Controllers
@@ -33,6 +34,7 @@ namespace MvcStoreWeb.Controllers
 
         public async Task<IActionResult> Category(int id)
         {
+           
             var model = await context.Categories.FindAsync(id);
             return View(model);
         }
