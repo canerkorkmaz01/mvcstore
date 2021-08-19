@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using MvcStoreData;
 using MvcStoreWeb.Models;
+using MvcStoreWeb.Sys;
+using NETCore.MailKit.Core;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -14,14 +18,26 @@ namespace MvcStoreWeb.Controllers
     {
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
+        private readonly IEmailService mailService;
+        private readonly IConfiguration configuration;
+        private readonly IWebHostEnvironment hostingEnvironment;
+        private readonly AppDbContext context;
 
         public AccountController(
             UserManager<User> userManager,
-            SignInManager<User> signInManager
+            SignInManager<User> signInManager,
+            IEmailService mailService,
+            IConfiguration configuration,
+            IWebHostEnvironment hostingEnvironment,
+            AppDbContext context
             )
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.mailService = mailService;
+            this.configuration = configuration;
+            this.hostingEnvironment = hostingEnvironment;
+            this.context = context;
         }
 
         public IActionResult Login()
@@ -82,13 +98,56 @@ namespace MvcStoreWeb.Controllers
             }
             else
             {
-                await userManager.AddClaimAsync(newUser, new Claim("", newUser.Name));
+                await userManager.AddClaimAsync(newUser, new Claim("FullName", newUser.Name));
                 await userManager.AddToRoleAsync(newUser, "Members");
+
+                var token = await userManager.GenerateEmailConfirmationTokenAsync(newUser);
+                var url = Url.Action("Confirmation", "Account", new { id = newUser.Id, token = token }, Request.Scheme);
+
+                var body = string.Format(
+                    System.IO.File.ReadAllText(System.IO.Path.Combine(hostingEnvironment.WebRootPath, "content", "templates", "confirmation.html")),
+                    model.Name,
+                    url
+                    );
+
+                await mailService.SendAsync(
+                    mailTo: model.Email,
+                    subject: $"{configuration.GetValue<string>("Application:Name")} Üyelik E-Posta Doğrulama Mesajı",
+                    message: body,
+                    isHtml: true
+                    );
+
                 return View("RegisterSuccess");
             }
 
         }
 
+        public async Task<IActionResult> Confirmation(int id, string token)
+        {
+            var user = await userManager.FindByIdAsync(id.ToString());
+            var result = await userManager.ConfirmEmailAsync(user, token);
+            if (result.Succeeded)
+            {
+                return View();
+            }
+            return BadRequest();
+        }
 
+        public async Task<IActionResult> AddToCart(int id, int quantity)
+        {
+            var shoppingChart = new ShoppingCart();
+
+            var value = Request.Cookies["shoppingCart"];
+
+            if (value != null)
+                shoppingChart = JsonConvert.DeserializeObject<ShoppingCart>(value);
+
+            var product = await context.Products.FindAsync(id);
+            shoppingChart.Add(product, quantity);
+            value = JsonConvert.SerializeObject(shoppingChart);
+            Response.Cookies.Append("shoppingCart", value, new CookieOptions { Expires = DateTime.Now.AddDays(7) });
+            TempData["success"] = $"{product.Name} isimli ürün sepetinize eklenmiştir!";
+            return RedirectToRoute("product", new { name = product.Name.ToSafeUrlString(), id = product.Id });
+        }
     }
 }

@@ -39,7 +39,7 @@
             </div>
         }
         <div class="py-2">
-            <form novalidate class="form-inline">
+            <form asp-controller="Account" asp-action="AddToCart" method="get" novalidate class="form-inline">
                 <input type="hidden" name="Id" value="@Model.Id" />
                 <button id="decrease" class="btn btn-outline-secondary" type="button">
                     <i class="fa fa-minus"></i>

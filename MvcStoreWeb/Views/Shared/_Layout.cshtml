@@ -29,18 +29,38 @@
                         </div>
                     </form>
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a asp-controller="Account" asp-action="Register" class="nav-link">
-                                <i class="fa fa-user-plus"></i>
-                                Yeni Üyelik
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-controller="Account" asp-action="Login" class="nav-link">
-                                <i class="fa fa-sign-in-alt"></i>
-                                Üye Girişi
-                            </a>
-                        </li>
+                        @await Component.InvokeAsync("ShoppingCartButton")
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <span class="navbar-text">
+                                    <i class="fa fa-user"></i>
+                                    Hoşgeldini Sn. @User.FindFirst("FullName")?.Value
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-controller="Account" asp-action="Logout" class="nav-link">
+                                    <i class="fa fa-power-off"></i>
+                                    Çıkış
+                                </a>
+                            </li>
+
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a asp-controller="Account" asp-action="Register" class="nav-link">
+                                    <i class="fa fa-user-plus"></i>
+                                    Yeni Üyelik
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-controller="Account" asp-action="Login" class="nav-link">
+                                    <i class="fa fa-sign-in-alt"></i>
+                                    Üye Girişi
+                                </a>
+                            </li>
+                        }
 
                     </ul>
                 </div>
@@ -63,11 +83,50 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @await RenderSectionAsync("Scripts", required: false)
     <script>
+
         $(() => {
             $('[data-toggle=tooltip]').tooltip();
         });
+
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+
+
+            @if (TempData["success"] != null)
+            {
+                <text>
+                Toast.fire({
+                    icon: 'success',
+                    title: '@TempData["success"]'
+                })
+                </text>
+            }
+
+
+
+            @if (TempData["error"] != null)
+            {
+                <text>
+                Toast.fire({
+                    icon: 'error',
+                    title: '@TempData["error"]'
+                })
+                </text>
+            }
     </script>
 </body>
 </html>

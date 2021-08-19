@@ -8,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MvcStoreData;
 using MvcStoreWeb.Sys;
+using NETCore.MailKit.Extensions;
+using NETCore.MailKit.Infrastructure.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,7 +58,7 @@ namespace MvcStoreWeb
                             });
                         break;
                 }
-                
+
             });
 
             services
@@ -70,10 +72,26 @@ namespace MvcStoreWeb
 
                     options.Lockout.MaxFailedAccessAttempts = Configuration.GetValue<int>("Application:Lockout:MaxFailedAccessAttempts");
                     options.Lockout.DefaultLockoutTimeSpan = Configuration.GetValue<TimeSpan>("Application:Lockout:DefaultLockoutTimeSpan");
-                    
+
                 })
                 .AddEntityFrameworkStores<AppDbContext>()
-                .AddErrorDescriber<MvcStoreIdentityErrorDescriber>();
+                .AddErrorDescriber<MvcStoreIdentityErrorDescriber>()
+                .AddDefaultTokenProviders();
+
+            services.AddMailKit(options =>
+            {
+                options.UseMailKit(new MailKitOptions
+                {
+                    Server = Configuration.GetValue<string>("Application:EMail:Server"),
+                    Port = Configuration.GetValue<int>("Application:EMail:Port"),
+                    Account = Configuration.GetValue<string>("Application:EMail:Account"),
+                    Password = Configuration.GetValue<string>("Application:EMail:Password"),
+                    Security = Configuration.GetValue<bool>("Application:EMail:Security"),
+                    SenderEmail = Configuration.GetValue<string>("Application:EMail:SenderEmail"),
+                    SenderName = Configuration.GetValue<string>("Application:EMail:SenderName")
+                }
+                );
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
