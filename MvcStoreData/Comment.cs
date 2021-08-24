@@ -2,13 +2,17 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MvcStoreData.Infrastructure;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace MvcStoreData
 {
     public class Comment : BaseEntity
     {
+        [Display(Name ="Yorumunuz")]
+        [Required(ErrorMessage = "Yorum boş bırakılamaz!")]
         public string Text { get; set; }
 
+        [Display(Name ="Puan")]
         public int Rate { get; set; }
 
         public int ProductId { get; set; }

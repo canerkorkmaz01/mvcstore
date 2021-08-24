@@ -38,3 +38,21 @@ $fa-font-path: '/css/webfonts';
     content: '\f071';
 }
 
+.thumb-image {
+    cursor: pointer;
+    transition: .3s all ease-in-out;
+}
+
+.thumb-image.active,
+.thumb-image:hover {
+    @extend .bg-light;
+}
+
+.rate-star {
+    cursor: pointer;
+}
+
+.comment-box {
+    @extend .bg-light;
+    border-left: 16px solid $gray-400;
+}

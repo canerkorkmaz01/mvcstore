@@ -149,5 +149,8 @@ namespace MvcStoreWeb.Controllers
             TempData["success"] = $"{product.Name} isimli ürün sepetinize eklenmiştir!";
             return RedirectToRoute("product", new { name = product.Name.ToSafeUrlString(), id = product.Id });
         }
+
+        public IActionResult AccessDenied() => View();
+
     }
 }

@@ -4587,12 +4587,20 @@ button.bg-danger:focus,
 button.alert-danger:focus {
   background-color: #bd2130 !important; }
 
-.bg-light {
+.bg-light, .thumb-image.active,
+.thumb-image:hover, .comment-box {
   background-color: #f8f9fa !important; }
 
-a.bg-light:hover, a.bg-light:focus,
+a.bg-light:hover,
+a.thumb-image:hover, a.comment-box:hover, a.bg-light:focus, a.thumb-image.active:focus,
+a.thumb-image:focus:hover, a.comment-box:focus,
 button.bg-light:hover,
-button.bg-light:focus {
+button.thumb-image:hover,
+button.comment-box:hover,
+button.bg-light:focus,
+button.thumb-image.active:focus,
+button.thumb-image:focus:hover,
+button.comment-box:focus {
   background-color: #dae0e5 !important; }
 
 .bg-dark {
@@ -11639,3 +11647,13 @@ readers do not read off random characters that represent icons */
   font-family: 'Font Awesome 5 Free';
   font-weight: 900;
   content: '\f071'; }
+
+.thumb-image {
+  cursor: pointer;
+  transition: .3s all ease-in-out; }
+
+.rate-star {
+  cursor: pointer; }
+
+.comment-box {
+  border-left: 16px solid #ced4da; }

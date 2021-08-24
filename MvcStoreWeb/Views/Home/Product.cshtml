@@ -1,11 +1,19 @@
 ﻿@model Product
 @{
     ViewData["title"] = Model.Name;
+    var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 }
 
 <div class="row">
     <div class="col-12 col-md-6 p-2">
-        <img src="@Model.Photo" class="img-thumbnail" />
+        <img src="@Model.Photo" class="img-thumbnail" id="product-image" />
+        <div class="py-2 d-flex justify-content-center align-items-center flex-wrap">
+            <img class="p-2 m-1 border thumb-image active" src="@Model.Photo" width="80" height="80" />
+            @foreach (var productImage in Model.ProductImages)
+            {
+                <img class="p-2 m-1 border thumb-image" id="thumb-image" src="@productImage.Photo" width="80" height="80" />
+            }
+        </div>
     </div>
     <div class="col-12 col-md-6 p-2">
         @if (Model.BrandId != null)
@@ -55,16 +63,93 @@
         </div>
     </div>
 </div>
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="descriptions-tab" data-toggle="tab" href="#descriptions" role="tab">
+            <i class="fa fa-bars"></i> Ürün Özellikleri
+        </a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="comments-tab" data-toggle="tab" href="#comments" role="tab">
+            <i class="fa fa-comments"></i> Yorumlar <span class="badge badge-secondary">@Model.Comments.Where(p => p.Enabled || p.UserId == userId).Count().ToString("n0")</span>
+        </a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="cc-tab" data-toggle="tab" href="#cc" role="tab">
+            <i class="fa fa-credit-card"></i> Taksit Seçenekleri
+        </a>
+    </li>
+</ul>
+<div class="tab-content border-left border-bottom border-right p-2" id="myTabContent">
+    <div class="tab-pane fade show active" id="descriptions" role="tabpanel" aria-labelledby="home-tab">
+        @Html.Raw(@Model.Summary)
+    </div>
+    <div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="profile-tab">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <partial name="CreateCommentPartial" model="new Comment{ ProductId = Model.Id }" />
+        }
+        else
+        {
+            <div class="p-2 text-info">
+                <i class="fa fa-info-circle"></i> Yorum eklemek için kullanıcı girişi yapınız...
+            </div>
+        }
+        <hr />
+        @foreach (var comment in Model.Comments.Where(p => p.Enabled || p.UserId == userId))
+        {
+            <div class="py-4 border-bottom p-4 mb-2 comment-box">
+                <div class="text-secondary">
+                    <i class="fa fa-user"></i> <b>@comment.User.Name</b>
+                </div>
+                <p class="text-secondary">
+                    <i class="fa fa-calendar"></i> <i class="small">@comment.DateCreated.ToString()</i>
+                </p>
+                <p>@comment.Text</p>
+                <p>
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        if (i <= comment.Rate)
+                        {
+                            <i class="fas fa-star mr-2 text-warning"></i>
+                        }
+                        else
+                        {
+                            <i class="far fa-star mr-2 text-warning"></i>
+                        }
+                    }
+                </p>
+                <div class="d-flex">
+                    <div class="mr-4 ml-auto">
+                        <a asp-action="LikeComment" asp-route-id="@comment.Id" asp-route-like="@true" asp-route-productId="@Model.Id" class="btn btn-outline-info">
+                            <i class="fa fa-thumbs-up"></i>
+                            @comment.CommentLikes.Where(p => p.Like).Count()
+                        </a>
+                    </div>
+                    <div class="mr-4">
+                        <a asp-action="LikeComment" asp-route-id="@comment.Id" asp-route-like="@false" asp-route-productId="@Model.Id" class="btn btn-outline-info">
+                            <i class="fa fa-thumbs-down"></i>
+                            @comment.CommentLikes.Where(p => !p.Like).Count()
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+    <div class="tab-pane fade" id="cc" role="tabpanel" aria-labelledby="contact-tab">...</div>
+</div>
 
 @section Scripts {
     <script>
         $(() => {
             $('#decrease').click(decrease);
+
             $('#increase').click(increase);
 
             $('#quantity').keydown(function (e) {
                 var isNumber = /^\d+$/.test(e.originalEvent.key);
-                
+
                 if (e.originalEvent.keyCode != 8 && !isNumber) {
                     e.preventDefault();
                     return;
@@ -92,6 +177,35 @@
                 v++;
                 $('#quantity').val(v);
             }
+
+            $('.thumb-image').click((e) => {
+                $('.thumb-image').removeClass('active');
+                $(e.currentTarget).addClass('active');
+                $('#product-image').attr('src', $(e.currentTarget).attr('src'));
+            });
+
+            $('.rate-star').click((e) => {
+                const star = e.currentTarget;
+                const val = $(star).attr('data-val');
+                $('.rate-star').removeClass('fas').addClass('far');
+                for (var i = 1; i <= val; i++) {
+                    $('.rate-star[data-val=' + i + ']').removeClass('far').addClass('fas');
+                }
+                $('#Rate').val(val);
+            });
+
+            $('#commentForm').submit((e) => {
+                const val = $('#Rate').val();
+                if (val == 0) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Hata',
+                        html: 'Lütfen bir puan veriniz.'
+                    });
+                    return false;
+                }
+            });
+
         });
     </script>
 }
