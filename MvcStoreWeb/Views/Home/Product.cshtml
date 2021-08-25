@@ -121,15 +121,15 @@
                 </p>
                 <div class="d-flex">
                     <div class="mr-4 ml-auto">
-                        <a asp-action="LikeComment" asp-route-id="@comment.Id" asp-route-like="@true" asp-route-productId="@Model.Id" class="btn btn-outline-info">
+                        <a class="btn btn-outline-info like-btn" data-id="@comment.Id" data-userId="@User.FindFirst(ClaimTypes.NameIdentifier).Value">
                             <i class="fa fa-thumbs-up"></i>
-                            @comment.CommentLikes.Where(p => p.Like).Count()
+                            <span class="count">@comment.CommentLikes.Where(p => p.Like).Count()</span>
                         </a>
                     </div>
                     <div class="mr-4">
-                        <a asp-action="LikeComment" asp-route-id="@comment.Id" asp-route-like="@false" asp-route-productId="@Model.Id" class="btn btn-outline-info">
+                        <a class="btn btn-outline-info dislike-btn" data-id="@comment.Id" data-userId="@User.FindFirst(ClaimTypes.NameIdentifier).Value">
                             <i class="fa fa-thumbs-down"></i>
-                            @comment.CommentLikes.Where(p => !p.Like).Count()
+                            <span class="count">@comment.CommentLikes.Where(p => !p.Like).Count()</span>
                         </a>
                     </div>
 
@@ -137,75 +137,42 @@
             </div>
         }
     </div>
-    <div class="tab-pane fade" id="cc" role="tabpanel" aria-labelledby="contact-tab">...</div>
+    <div class="tab-pane fade" id="cc" role="tabpanel" aria-labelledby="contact-tab">
+        <table class="table table-bordered table-sm table-striped">
+            <thead>
+                <tr>
+                    <th class="text-center" colspan="3">
+                        <img src="~/content/images/axess.jpg" width="120" height="80" />
+                    </th>
+                    <th class="text-center" colspan="3">
+                        <img src="~/content/images/bonus.png" width="120" height="80" />
+                    </th>
+                    <th class="text-center" colspan="3">
+                        <img src="~/content/images/maximum.jpg" width="120" height="80" />
+                    </th>
+                    <th class="text-center" colspan="3">
+                        <img src="~/content/images/world.jpg" width="120" height="80" />
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 2; i <= 12; i++)
+                {
+                    <tr>
+                        @for (int k = 0; k < 4; k++)
+                        {
+                            <td>@i Taksit </td>
+                            <td class="text-right text-monospace">@Model.MonthlyInstalment(.8m + i / 10m, i).ToString("c2")</td>
+                            <td class="text-right text-monospace">@Model.InstalmentTotal(.8m + i / 10m).ToString("c2")</td>
+
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 
 @section Scripts {
-    <script>
-        $(() => {
-            $('#decrease').click(decrease);
-
-            $('#increase').click(increase);
-
-            $('#quantity').keydown(function (e) {
-                var isNumber = /^\d+$/.test(e.originalEvent.key);
-
-                if (e.originalEvent.keyCode != 8 && !isNumber) {
-                    e.preventDefault();
-                    return;
-                }
-            });
-
-            $('#quantity').change(function (e) {
-                const v = $(e.currentTarget).val();
-                if (v == null || v == '') {
-                    $(e.currentTarget).val(1);
-                }
-            });
-
-            function decrease(e) {
-                var v = $('#quantity').val();
-                if (v > 1) {
-                    v--;
-                    $('#quantity').val(v);
-                }
-
-            }
-
-            function increase(e) {
-                var v = $('#quantity').val();
-                v++;
-                $('#quantity').val(v);
-            }
-
-            $('.thumb-image').click((e) => {
-                $('.thumb-image').removeClass('active');
-                $(e.currentTarget).addClass('active');
-                $('#product-image').attr('src', $(e.currentTarget).attr('src'));
-            });
-
-            $('.rate-star').click((e) => {
-                const star = e.currentTarget;
-                const val = $(star).attr('data-val');
-                $('.rate-star').removeClass('fas').addClass('far');
-                for (var i = 1; i <= val; i++) {
-                    $('.rate-star[data-val=' + i + ']').removeClass('far').addClass('fas');
-                }
-                $('#Rate').val(val);
-            });
-
-            $('#commentForm').submit((e) => {
-                const val = $('#Rate').val();
-                if (val == 0) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Hata',
-                        html: 'Lütfen bir puan veriniz.'
-                    });
-                    return false;
-                }
-            });
-
-        });
-    </script>
+    <script src="~/js/product.js" asp-append-version="true"></script>
 }

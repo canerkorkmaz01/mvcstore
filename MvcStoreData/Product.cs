@@ -51,7 +51,7 @@ namespace MvcStoreData
 
         [NotMapped]
         public int[] SelectedCategories { get; set; }
-        
+
         [NotMapped]
         public int[] PicturesToDeleted { get; set; }
 
@@ -71,6 +71,16 @@ namespace MvcStoreData
         public virtual ICollection<ProductImage> ProductImages { get; set; } = new HashSet<ProductImage>();
 
         public virtual ICollection<OrderItem> OrderItems { get; set; } = new HashSet<OrderItem>();
+
+        public decimal InstalmentTotal(decimal rate)
+        {
+            return DiscountedPrice + (DiscountedPrice * rate / 100m);
+        }
+        public decimal MonthlyInstalment(decimal rate, int months)
+        {
+            return InstalmentTotal(rate) / months;
+        }
+
     }
 
     public class ProductEntityTypeConfiguration : IEntityTypeConfiguration<Product>

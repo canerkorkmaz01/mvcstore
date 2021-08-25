@@ -3,4 +3,49 @@
 }
 <h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div ng-app="uygulama1" ng-controller="elma">
+
+    <input class="form-control" name="ccNum" ng-model="currentNum" />
+
+    <hr />
+    <button type="button" class="btn btn-primary" ng-click="bin()">Getir</button>
+    <hr />
+    <table class="table table-bordered" ng-show="result">
+        <tr>
+            <td>Banka Adı</td>
+            <td>:</td>
+            <td>{{result.bank.name}}</td>
+        </tr>
+        <tr>
+            <td>Kart Tipi</td>
+            <td>:</td>
+            <td>{{result.scheme}}</td>
+        </tr>
+        <tr>
+            <td>Ülke</td>
+            <td>:</td>
+            <td>{{result.country.name}}</td>
+        </tr>
+
+    </table>
+</div>
+
+
+@section Scripts {
+    <script src="~/lib/angular.js/angular.min.js"></script>
+    <script>
+        'use strict';
+
+        const app = angular.module('uygulama1', []);
+        app.controller('elma', ($scope, $http) => {
+
+            $scope.bin = () => {
+                $http
+                    .get(`https://lookup.binlist.net/${$scope.currentNum}`)
+                    .then((response) => {
+                        $scope.result = response.data;
+                    });
+            }
+        });
+    </script>
+}

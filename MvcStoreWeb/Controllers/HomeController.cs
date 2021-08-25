@@ -68,21 +68,35 @@ namespace MvcStoreWeb.Controllers
             return RedirectToAction("Product", new { id = model.ProductId });
         }
 
-        [Authorize]
-        public async Task<IActionResult> LikeComment(int id, bool like, int productId)
+        [HttpGet]
+        public async Task<IActionResult> LikeComment(int id, bool like, int userId)
         {
-            var model = new CommentLike
+            var comment = await context.Comments.FindAsync(id);
+
+            var result = new LikeResultModel { Dislikes = 0, Likes = 0, Error = false };
+
+            if (!comment.CommentLikes.Any(p => p.UserId == userId))
             {
-                DateCreated = DateTime.Now,
-                Enabled = true,
-                UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
-                Like = like,
-                CommentId = id
-            };
-            context.Entry(model).State = EntityState.Added;
-            await context.SaveChangesAsync();
-            
-            return RedirectToAction("Product", new { id = productId });
+                var model = new CommentLike
+                {
+                    DateCreated = DateTime.Now,
+                    Enabled = true,
+                    UserId = userId,
+                    Like = like,
+                    CommentId = id
+                };
+                context.Entry(model).State = EntityState.Added;
+                await context.SaveChangesAsync();
+                result.Likes = comment.CommentLikes.Where(p => p.Like).Count();
+                result.Dislikes = comment.CommentLikes.Where(p => !p.Like).Count();
+            }
+            else
+            {
+                result.Error = true;
+            }
+            return Json(result);
+
+            //return RedirectToAction("Product", new { id = productId });
         }
     }
 }

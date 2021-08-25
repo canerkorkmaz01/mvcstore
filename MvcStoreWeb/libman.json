@@ -3,10 +3,6 @@
   "defaultProvider": "cdnjs",
   "libraries": [
     {
-      "library": "angular.js@1.8.2",
-      "destination": "wwwroot/lib/angular.js/"
-    },
-    {
       "library": "bootstrap@4.6.0",
       "destination": "Styles/bootstrap/",
       "files": [
@@ -145,6 +141,10 @@
         "themes/light/light.css",
         "themes/light/loading.gif"
       ]
+    },
+    {
+      "library": "angular.js@1.8.2",
+      "destination": "wwwroot/lib/angular.js/"
     }
   ]
 }
