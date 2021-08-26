@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MvcStoreData;
 using MvcStoreWeb.Models;
@@ -9,6 +10,7 @@ using MvcStoreWeb.Sys;
 using NETCore.MailKit.Core;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -150,7 +152,44 @@ namespace MvcStoreWeb.Controllers
             return RedirectToRoute("product", new { name = product.Name.ToSafeUrlString(), id = product.Id });
         }
 
+        public async Task<IActionResult> Checkout()
+        {
+            var shoppingChart = new ShoppingCart();
+
+            var value = Request.Cookies["shoppingCart"];
+            if (value != null)
+            {
+                shoppingChart = JsonConvert.DeserializeObject<ShoppingCart>(value);
+
+                var products = await context.Products.Where(p => shoppingChart.Items.Select(q => q.Id).Contains(p.Id)).ToListAsync();
+                shoppingChart.Items.ToList().ForEach(p => p.Product = products.Single(q => q.Id == p.Id));
+            }
+            return View(shoppingChart);
+        }
+
         public IActionResult AccessDenied() => View();
 
+        public IActionResult ClearCart()
+        {
+            Response.Cookies.Delete("shoppingCart");
+            return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult RemoveFromCart(int id)
+        {
+
+
+            var value = Request.Cookies["shoppingCart"];
+            if (value != null)
+            {
+                var shoppingChart = JsonConvert.DeserializeObject<ShoppingCart>(value);
+                var item = shoppingChart.Items.Single(p => p.Id == id);
+                shoppingChart.Items.Remove(item);
+                value = JsonConvert.SerializeObject(shoppingChart);
+                Response.Cookies.Append("shoppingCart", value, new CookieOptions { Expires = DateTime.Now.AddDays(7) });
+                TempData["success"] = $"{item.Name} isimli ürün sepetinizden çıkartılmıştır!";
+            }
+            return RedirectToAction("Checkout");
+        }
     }
 }

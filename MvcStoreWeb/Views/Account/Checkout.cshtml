@@ -1,0 +1,136 @@
+﻿@model ShoppingCart
+
+@inject IConfiguration configuration
+
+@{
+    ViewData["title"] = "Satın Al";
+}
+
+@if (Model.Items.Any())
+{
+    <div class="row">
+        <div class="col-12 col-md-9">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Foto:</th>
+                        <th>Ürün Adı</th>
+                        <th class="text-right">Miktar</th>
+                        <th class="text-right">Fiyat</th>
+                        <th class="text-right">Tutar</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var shoppingCartItem in Model.Items)
+                    {
+                        <tr>
+                            <td>
+                                <img src="@shoppingCartItem.Product.Photo" height="60" width="60" />
+                            </td>
+                            <td>
+                                <a asp-route="product" asp-route-id="@shoppingCartItem.Product.Id" asp-route-name="@shoppingCartItem.Product.Name.ToSafeUrlString()">
+                                    @shoppingCartItem.Product.Name
+                                </a>
+                                <div class="small">
+                                    @string.Join(", ", shoppingCartItem.Product.Categories.Select(p => p.Name))
+                                </div>
+                                <div>
+                                    @shoppingCartItem.Product.Brand?.Name
+                                </div>
+                            </td>
+                            <td class="text-right text-monospace">@shoppingCartItem.Quantity.ToString("n0")</td>
+                            <td class="text-right text-monospace">@shoppingCartItem.Price.ToString("c2")</td>
+                            <td class="text-right text-monospace">@shoppingCartItem.Amount.ToString("c2")</td>
+                            <td>
+                                <a class="remove-btn" asp-action="RemoveFromCart" asp-route-id="@shoppingCartItem.Id">
+                                    <i class="fa fa-trash text-danger"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="6" class="text-right">
+                            <a id="clearCartButton" asp-action="ClearCart" class="btn btn-warning">
+                                <i class="fa fa-close"></i> Sepeti Boşalt
+                            </a>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="col-12 col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h2>Sipariş Özeti</h2>
+                    <h5>Toplam : @Model.Items.Sum(p => p.Quantity) Ürün</h5>
+
+                    <h6>Ürün Toplamı : @Model.GrandTotal.ToString("c2")</h6>
+                    @if (configuration.GetValue<decimal>("Application:CargoThreshold") <= Model.GrandTotal)
+                    {
+                        <div class="text-success">
+                            <i class="fa fa-truck"></i> Kargo ücretsiz
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-info">
+                            Kargo Ücreti @(configuration.GetValue<decimal>("Application:CargoFee").ToString("c2"))
+                        </div>
+                        <h6>Genel Toplam : @((Model.GrandTotal+ configuration.GetValue<decimal>("Application:CargoFee")).ToString("c2"))</h6>
+                    }
+                    <a asp-action="Payment" class="btn btn-success btn-block mt-4">
+                        <i class="fa fa-credit-card"></i> SATIN AL
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="p-4 text-center">
+        Sepetinizde henüz ürün bulunmamaktadır.
+    </div>
+}
+
+
+@section Scripts {
+    <script>
+        $(() => {
+            $('#clearCartButton').click((e) => {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Uyarı',
+                    html: 'Septiniz tamamen boşaltılacaktır. Devam etmek istiyormusunuz?',
+                    confirmButtonText: 'Sil',
+                    showCancelButton: true,
+                    cancelButtonText: 'İptal'
+                }).then(result => {
+                    if (result.value) {
+                        window.location = $(e.currentTarget).attr('href');
+                    }
+                });
+                return false;
+            });
+
+            $('.remove-btn').click((e) => {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Uyarı',
+                    html: 'Bu ürün sepetinizden çıkartılacaktır. Devam etmek istiyormusunuz?',
+                    confirmButtonText: 'Çıkar',
+                    showCancelButton: true,
+                    cancelButtonText: 'İptal'
+                }).then(result => {
+                    if (result.value) {
+                        window.location = $(e.currentTarget).attr('href');
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
+}

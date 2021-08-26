@@ -1,7 +1,7 @@
 ﻿@model Product
 @{
     ViewData["title"] = Model.Name;
-    var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+    var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "-1");
 }
 
 <div class="row">
