@@ -18,16 +18,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <form class="flex-fill mr-4" novalidate>
-                        <div class="input-group">
-                            <input type="search" class="form-control" />
-                            <div class="input-append">
-                                <button type="submit" class="btn btn-outline-primary">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    @await Component.InvokeAsync("SearchBar")
                     <ul class="navbar-nav">
                         @await Component.InvokeAsync("ShoppingCartButton")
                         @if (User.Identity.IsAuthenticated)

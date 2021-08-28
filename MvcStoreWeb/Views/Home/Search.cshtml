@@ -1,0 +1,24 @@
+﻿@model IEnumerable<Product>
+@{
+    ViewData["title"] = "Arama sonuçları";
+
+    var products = Model.ToPagedList((int)ViewBag.Page, 12);
+}
+
+@if (!Model.Any())
+{
+    <div class="p-4 text-center">
+        Bu kriterlere uygun ürün bulunamamıştır.
+    </div>
+}
+else
+{
+    <partial name="ProductTilesPartial" model="@products" />
+    <div class="py-2 d-flex justify-content-center">
+        @Html.PagedListPager(
+        products,
+        page => Url.Action("Search", new { keywords = ViewContext.HttpContext.Request.Query["keywords"], page = page, pageSize = ViewContext.HttpContext.Request.Query["pageSize"] }),
+        Extensions.PagedListPagerOptions
+        )
+    </div>
+}

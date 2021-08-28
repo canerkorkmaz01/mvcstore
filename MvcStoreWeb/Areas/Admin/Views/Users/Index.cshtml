@@ -1,0 +1,59 @@
+﻿@model IEnumerable<User>
+@inject UserManager<User> userManager
+@{
+    ViewData["Title"] = "Üyeler";
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="py-2 form-inline">
+            <form id="pageSizeForm" method="get" asp-action="Index">
+                <input type="hidden" name="page" value="@ViewContext.HttpContext.Request.Query["page"]" />
+                <partial name="PageSizeMenuPartial" model="@ViewContext.HttpContext.Request.Query["pageSize"].ToString()" />
+            </form>
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Name)</th>
+                    <th>@Html.DisplayNameFor(model => model.Email)</th>
+                    <th>@Html.DisplayNameFor(model => model.UserName)</th>
+                    <th>EMail Onay</th>
+                    <th>Rol</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.Name
+                        </td>
+                        <td>
+                            @item.Email
+                        </td>
+                        <td>
+                            @item.UserName
+                        </td>
+                        <td>
+                            @if (item.EmailConfirmed)
+                            {
+                                <i class="fa fa-check text-success"></i>
+                            }
+                            else
+                            {
+                                <i class="fa fa-times text-danger"></i>
+                            }
+                        </td>
+                        <td>
+                            <partial name="RoleListPartial" model="new RoleListItemViewModel { CurrentRoleName = (await userManager.GetRolesAsync(item)).First(), UserId = item.Id,  Role = new Role { Name = (await userManager.GetRolesAsync(item)).First() } }" />
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

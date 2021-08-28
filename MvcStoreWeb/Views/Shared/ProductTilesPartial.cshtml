@@ -1,19 +1,19 @@
 ﻿@model IEnumerable<Product>
 
-    <div class="d-flex form-inline py-2">
-        <select class="custom-select ml-auto">
-            <option>Fiyata Göre Artan</option>
-            <option>Fiyata Göre Azalan</option>
-        </select>
-    </div>
-    <div class="card">
-        <div class="card-body bg-light">
-            <div class="row row-cols-1 row-cols-md-4">
+<div class="d-flex form-inline py-2">
+    <select class="custom-select ml-auto">
+        <option>Fiyata Göre Artan</option>
+        <option>Fiyata Göre Azalan</option>
+    </select>
+</div>
+<div class="card">
+    <div class="card-body bg-light">
+        <div class="row row-cols-1 row-cols-md-4">
 
-                @foreach (var product in Model)
-                {
-                    <partial name="ProductBoxPartial" model="product" />
-                }
-            </div>
+            @foreach (var product in Model)
+            {
+                <partial name="ProductBoxPartial" model="product" />
+            }
         </div>
     </div>
+</div>

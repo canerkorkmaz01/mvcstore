@@ -1,0 +1,16 @@
+﻿@model SearchViewModel
+<form method="get" asp-controller="Home" asp-action="Search" class="flex-fill mr-4" novalidate>
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <select class="custom-select" asp-for="CategoryId"  asp-items="ViewBag.Categories as SelectList">
+                <option value="">Kategori</option>
+            </select>
+        </div>
+        <input type="search" class="form-control" asp-for="Keywords" />
+        <div class="input-append">
+            <button type="submit" class="btn btn-outline-primary">
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
+    </div>
+</form>

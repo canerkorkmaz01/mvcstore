@@ -9,7 +9,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace MvcStoreWeb.Controllers
 {
@@ -29,16 +31,19 @@ namespace MvcStoreWeb.Controllers
 
         public async Task<IActionResult> Index()
         {
-            ViewBag.Products = await context.Products.OrderBy(p => Guid.NewGuid()).Take(12).ToListAsync();
+            ViewBag.Products = (await context.Products.OrderBy(p => Guid.NewGuid()).Take(12).ToListAsync()).ToPagedList();
             return View();
         }
 
         public async Task<IActionResult> Category(int id)
         {
+            var page = HttpContext.Request.Query["page"].ToString();
+            ViewBag.Page = string.IsNullOrEmpty(page) ? 1 : int.Parse(page);
 
             var model = await context.Categories.FindAsync(id);
             return View(model);
         }
+
         public async Task<IActionResult> Product(int id)
         {
             var model = await context.Products.FindAsync(id);
@@ -97,6 +102,29 @@ namespace MvcStoreWeb.Controllers
             return Json(result);
 
             //return RedirectToAction("Product", new { id = productId });
+        }
+
+        public async Task<IActionResult> Search(SearchViewModel model)
+        {
+            var page = HttpContext.Request.Query["page"].ToString();
+            ViewBag.Page = string.IsNullOrEmpty(page) ? 1 : int.Parse(page);
+
+            if (!string.IsNullOrEmpty(model.Keywords))
+            {
+                var search = Regex.Matches(model.Keywords.ToLower(), @"\w+").Select(p => p.Value).ToList();
+
+                var result = (await context.Products.ToListAsync()).Where(p =>
+                    p.Enabled &&
+                    (p.Categories.Any(q => q.Id == model.CategoryId) || model.CategoryId == null) &&
+                    search.Any(q => p.Name.ToLower().Contains(q)))
+                    .ToList();
+                return View(result.ToPagedList());
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+
         }
     }
 }

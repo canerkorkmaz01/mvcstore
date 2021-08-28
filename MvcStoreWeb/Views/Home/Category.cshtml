@@ -1,9 +1,18 @@
 ﻿@model Category
 @{
     ViewData["title"] = Model.Name;
+
+    var products = Model.Products.Where(p => p.Enabled).ToPagedList((int)ViewBag.Page, 12);
 }
 
 <h2>@Model.Name</h2>
 <hr />
 
-<partial name="ProductTilesPartial" model="@Model.Products.Where(p=>p.Enabled)" />
+<partial name="ProductTilesPartial" model="@products" />
+<div class="py-2 d-flex justify-content-center">
+    @Html.PagedListPager(
+    products,
+    page => Url.Action("Category", new { page = page, pageSize = ViewContext.HttpContext.Request.Query["pageSize"] }),
+    Extensions.PagedListPagerOptions
+    )
+</div>
