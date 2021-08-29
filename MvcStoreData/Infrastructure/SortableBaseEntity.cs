@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MvcStoreData.Infrastructure
 {
-    public class SortableBaseEntity : BaseEntity
+    public abstract class SortableBaseEntity : BaseEntity
     {
         [Display(Name = "Sıralama")]
         public int SortOrder { get; set; }

@@ -1,0 +1,185 @@
+﻿@model PaymentViewModel
+@{
+    ViewData["title"] = "Ödeme";
+}
+
+<div class="card" ng-app="payment" ng-controller="paymentController" ng-init="init()">
+    <div class="card-body">
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="CardHolderName"></label>
+                <input asp-for="CardHolderName" class="form-control" />
+                <span asp-validation-for="CardHolderName"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CardNumber"></label>
+                <input asp-for="CardNumber" class="form-control" />
+                <span asp-validation-for="CardNumber"></span>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-3">
+                    <label asp-for="ExpMonth"></label>
+                    <select asp-for="ExpMonth" class="custom-select">
+                        <option disabled selected>Seçiniz...</option>
+                        @for (int i = 1; i <= 12; i++)
+                        {
+                            <option>@i.ToString("00")</option>
+                        }
+                    </select>
+                    <span asp-validation-for="ExpMonth"></span>
+                </div>
+                <div class="form-group col-3">
+                    <label asp-for="ExpYear"></label>
+                    <select asp-for="ExpYear" class="custom-select">
+                        <option disabled selected>Seçiniz...</option>
+                        @for (int i = DateTime.Today.Year; i <= DateTime.Today.Year + 10; i++)
+                        {
+                            <option>@i</option>
+                        }
+                    </select>
+                    <span asp-validation-for="ExpMonth"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-2">
+                    <label asp-for="CVV"></label>
+                    <input asp-for="CVV" class="form-control" />
+                    <span asp-validation-for="CVV"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-6">
+                    <label asp-for="DeliveryAddressId"></label>
+                    <br />
+                    <div ng-show="!loaded" class="spinner-border text-success" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <div>
+                        <div class="p-2 mb-2 border" ng-repeat="address in addresses.deliveryAddresses">
+                            <input type="radio" value="{{address.id}}" />
+                            <div>{{address.name}}</div>
+                            <div class="small">{{address.address}}</div>
+                            <div class="small"><i>{{address.city}} / {{address.province}}</i></div>
+                        </div>
+                        <hr />
+                        <div class="text-right p-2">
+                            <button type="button" class="btn btn-outline-success" ng-click="openDieliveryAddresModal()">
+                                <i class="fa fa-plus"></i>
+                                Yeni Adres Ekle
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-6">
+                    <label asp-for="InvoiceAddressId"></label>
+
+                    <div class="p-2 mb-2 border" ng-repeat="addres in addresses.invoiceAddresses">
+                        <input type="radio" value="{{address.id}}" />
+                        <div>{{address.name}}</div>
+                        <div class="small">{{address.address}}</div>
+                        <div class="small"><i>{{address.city}} / {{address.city.province}}</i></div>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal" tabindex="-1" id="deliveryAddressModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Yeni Teslimat Adresi</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form novalidate name="deliveryAddressForm">
+                        <div class="form-row">
+                            <div class="form-group col-6">
+                                <label>Adres Adı</label>
+                                <input ng-model="currentDeliveryAddress.name" name="name" class="form-control" ng-class="{ 'is-invalid' : deliveryAddressForm.name.$dirty &&  deliveryAddressForm.name.$invalid}" required />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-12">
+                                <label>Adres</label>
+                                <textarea ng-model="currentDeliveryAddress.address" name="address" class="form-control" ng-class="{ 'is-invalid' : deliveryAddressForm.address.$dirty &&  deliveryAddressForm.address.$invalid}" required></textarea>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-6">
+                                <label>İrtibat No</label>
+                                <input ng-model="currentDeliveryAddress.phoneNumber" class="form-control" />
+                            </div>
+                            <div class="form-group col-6">
+                                <label>Posta Kodu</label>
+                                <input ng-model="currentDeliveryAddress.zipCode" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-3">
+                                <label>İl</label>
+                                <select ng-model="currentDeliveryAddress.province" name="province" ng-class="{ 'is-invalid' : deliveryAddressForm.province.$dirty &&  deliveryAddressForm.province.$invalid}" required ng-options="province as province.name for province in provinces track by province.id" class="custom-select"></select>
+                            </div>
+                            <div class="form-group col-3" ng-show="currentDeliveryAddress.province">
+                                <label>İlçe</label>
+                                <select ng-model="currentDeliveryAddress.city" name="city" ng-class="{ 'is-invalid' : deliveryAddressForm.city.$dirty &&  deliveryAddressForm.city.$invalid}" required ng-options="city as city.name for city in currentDeliveryAddress.province.cities track by city.id" class="custom-select"></select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <span ng-show="deliveryAddressForm.$invalid" class="text-danger">Lütfen gerekli alanları doldurunuz...</span>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
+                    <button type="button" class="btn btn-primary" ng-disabled="deliveryAddressForm.$invalid" ng-click="saveDeliveryAddress()">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script src="~/lib/angular.js/angular.min.js"></script>
+    <script>
+        'use strict';
+
+        const app = angular
+            .module("payment", [])
+            .controller("paymentController", ($scope, $http) => {
+                $scope.loaded = false;
+
+                $scope.init = () => {
+
+                    $http
+                        .get('/account/useraddresses')
+                        .then(response => {
+                            $scope.addresses = response.data;
+                            $scope.loaded = true;
+                        });
+
+                    $http
+                        .get('/account/provinces')
+                        .then(response => {
+                            $scope.provinces = response.data;
+                        });
+                };
+
+                $scope.openDieliveryAddresModal = () => {
+                    $('#deliveryAddressModal').modal();
+                }
+
+                $scope.saveDeliveryAddress = () => {
+                    $http
+                        .post('/account/adddeliveryaddress', $scope.currentDeliveryAddress)
+                        .then(response => {
+                            $scope.init();
+                            $('#deliveryAddressModal').modal('hide');
+                        });
+                }
+            });
+
+    </script>
+}

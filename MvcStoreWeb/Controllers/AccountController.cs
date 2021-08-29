@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -54,6 +55,12 @@ namespace MvcStoreWeb.Controllers
             var result = await signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, true);
             if (result.Succeeded)
             {
+                var user = await userManager.FindByNameAsync(model.UserName);
+                if (!user.Enabled)
+                {
+                    ModelState.AddModelError("", "Yasaklı kullanıcı girişi");
+                    return View(model);
+                }
                 return Redirect(model.ReturnUrl ?? "/");
             }
             else
@@ -190,6 +197,69 @@ namespace MvcStoreWeb.Controllers
                 TempData["success"] = $"{item.Name} isimli ürün sepetinizden çıkartılmıştır!";
             }
             return RedirectToAction("Checkout");
+        }
+
+        [Authorize]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [Authorize, HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            var user = await userManager.GetUserAsync(User);
+            var result = await userManager.ChangePasswordAsync(user, model.CurrentPassword, model.Password);
+            if (result.Succeeded)
+            {
+                TempData["success"] = "Parolanız başarıyla değiştirilmiştir. Bir sonraki girişinizde kullanabilirsiniz.";
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+                return View(model);
+            }
+        }
+
+
+        [Authorize]
+        public async Task<IActionResult> Payment()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public async Task<IActionResult> UserAddresses()
+        {
+            var user = await userManager.GetUserAsync(User);
+            var addresses = new
+            {
+                deliveryAddresses = user.Addresses.OfType<DeliveryAddress>().ToList().Select(p => new { p.Id, p.Name, p.Address, p.PhoneNumber, p.ZipCode, province = p.City.Province.Name, city = p.City.Name }),
+                invoiceAddresses = user.Addresses.OfType<InvoiceAddress>().ToList().Select(p => new { p.Id, p.Name, p.Address, p.TaxOffice, p.TaxNumber, province = p.City.Province.Name, city = p.City.Name })
+            };
+#if DEBUG
+            System.Threading.Thread.Sleep(5000);
+#endif
+            return Json(addresses);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Provinces()
+        {
+            return Json(await context.Provinces.OrderBy(p => p.Name).Select(p => new { p.Id, p.Name, Cities = p.Cities.Select(q => new { q.Id, q.Name }) }).ToListAsync());
+        }
+
+        [Authorize, HttpPost]
+        public async Task<IActionResult> AddDeliveryAddress([FromBody] DeliveryAddress model)
+        {
+            model.UserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            context.Entry(model).State = EntityState.Added;
+            await context.SaveChangesAsync();
+            return Ok();
         }
     }
 }

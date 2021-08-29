@@ -26,6 +26,7 @@
             <tbody>
                 @foreach (var item in Model)
                 {
+                    var roleName = (await userManager.GetRolesAsync(item)).First();
                     <tr>
                         <td>
                             @item.Name
@@ -47,9 +48,27 @@
                             }
                         </td>
                         <td>
-                            <partial name="RoleListPartial" model="new RoleListItemViewModel { CurrentRoleName = (await userManager.GetRolesAsync(item)).First(), UserId = item.Id,  Role = new Role { Name = (await userManager.GetRolesAsync(item)).First() } }" />
+                            @if (roleName != "Administrators")
+                            {
+                                <partial name="RoleListPartial" model="new RoleListItemViewModel { CurrentRoleName = roleName, UserId = item.Id,  Role = new Role { Name = (await userManager.GetRolesAsync(item)).First() } }" />
+                            }
                         </td>
                         <td>
+                            @if (roleName != "Administrators")
+                            {
+                                @if (item.Enabled)
+                                {
+                                    <a asp-action="BanUser" asp-route-id="@item.Id" class="btn btn-danger ban-button">
+                                        <i class="fa fa-ban"></i> Yasakla
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-action="UnbanUser" asp-route-id="@item.Id" class="btn btn-success unban-button">
+                                        <i class="fa fa-check"></i> Yasak Kaldır
+                                    </a>
+                                }
+                            }
                         </td>
                     </tr>
                 }
@@ -57,3 +76,60 @@
         </table>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        $(() => {
+            $('.ban-button').click((e) => {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Uyarı',
+                    html: 'Kullanıcı yasaklanacaktır. Devam etmek istiyormusunuz?',
+                    showCancelButton: true,
+                    cancelButtonText: 'İptal',
+                    confirmButtonText: `<i class="fa fa-ban"></i> Yasakla`
+                }).then(result => {
+                    if (result.value) {
+                        window.location = $(e.currentTarget).attr('href');
+                    }
+                });
+                return false;
+            });
+
+            $('.unban-button').click((e) => {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Uyarı',
+                    html: 'Kullanıcı yasağı kaldırılacaktır Devam etmek istiyormusunuz?',
+                    showCancelButton: true,
+                    cancelButtonText: 'İptal',
+                    confirmButtonText: `<i class="fa fa-check"></i> Kaldır`
+                }).then(result => {
+                    if (result.value) {
+                        window.location = $(e.currentTarget).attr('href');
+                    }
+                });
+                return false;
+            });
+
+
+            $('.change-role-btn').click((e) => {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Uyarı',
+                    html: 'Kullanıcı rolü değiştirilecektir. Devam etmek istiyormusunuz?',
+                    showCancelButton: true,
+                    cancelButtonText: 'İptal',
+                    confirmButtonText: `<i class="fa fa-check"></i> Devam`
+                }).then(result => {
+                    if (result.value) {
+                        const formId = $(e.currentTarget).attr('data-target');
+                        $(`#${formId}`).submit();
+                    }
+                });
+                return false;
+            });
+
+        });
+    </script>
+}

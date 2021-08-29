@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace MvcStoreWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Administrators, CatalogAdministrators, OrderAdministrators")]
+    [Authorize(Roles = "Administrators, AppAdministrators, CatalogAdministrators, OrderAdministrators")]
     public class DashboardController : Controller
     {
         public IActionResult Index()

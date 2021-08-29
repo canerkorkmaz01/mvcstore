@@ -30,7 +30,11 @@ namespace MvcStoreWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
 
             services.AddDbContext<AppDbContext>(options =>
             {
@@ -146,6 +150,7 @@ namespace MvcStoreWeb
             new[]
             {
                 new Role { Name = "Administrators", DisplayName = "Yöneticiler" },
+                new Role { Name = "AppAdministrators", DisplayName = "Uygulama Yöneticileri" },
                 new Role { Name = "CatalogAdministrators", DisplayName = "Ürün Yöneticileri" },
                 new Role { Name = "OrderAdministrators", DisplayName = "Sipariþ Yöneticileri" },
                 new Role { Name = "Members", DisplayName = "Üyeler" }
@@ -169,6 +174,7 @@ namespace MvcStoreWeb
                     EmailConfirmed = true
                 };
                 userManager.AddClaimAsync(newUser, new Claim("FullName", newUser.Name)).Wait();
+                userManager.AddToRoleAsync(newUser, "Administrators").Wait();
 
                 userManager.CreateAsync(newUser, Configuration.GetValue<string>("Application:DefaultAdmin:Password")).Wait();
                 userManager.AddToRoleAsync(newUser, "Administrators").Wait();

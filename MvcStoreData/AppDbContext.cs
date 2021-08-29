@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using MvcStoreData.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,5 +34,9 @@ namespace MvcStoreData
         public virtual DbSet<ProductImage> ProductImages { get; set; }
         public virtual DbSet<Rayon> Rayons { get; set; }
         public virtual DbSet<Banner> Banners { get; set; }
+        public virtual DbSet<Province> Provinces { get; set; }
+        public virtual DbSet<City> Cities { get; set; }
+        public virtual DbSet<DeliveryAddress> DeliveryAddresses { get; set; }
+        public virtual DbSet<InvoiceAddress> InvoiceAddresses { get; set; }
     }
 }

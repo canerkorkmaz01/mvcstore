@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using MvcStoreData.Infrastructure;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -22,6 +23,8 @@ namespace MvcStoreData
         [Display(Name ="Kaydı Yapan")]
         public string Name { get; set; }
 
+        public bool Enabled { get; set; } = true;
+
         public Genders Gender { get; set; }
 
         public virtual ICollection<Brand> Brands { get; set; } = new HashSet<Brand>();
@@ -34,6 +37,7 @@ namespace MvcStoreData
         public virtual ICollection<ProductImage> ProductImages { get; set; } = new HashSet<ProductImage>();
         public virtual ICollection<Rayon> Rayons { get; set; } = new HashSet<Rayon>();
         public virtual ICollection<Banner> Banners { get; set; } = new HashSet<Banner>();
+        public virtual ICollection<UserAddress> Addresses { get; set; } = new HashSet<UserAddress>();
 
     }
 

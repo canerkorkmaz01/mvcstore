@@ -23,11 +23,25 @@
                         @await Component.InvokeAsync("ShoppingCartButton")
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item">
-                                <span class="navbar-text">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fa fa-user"></i>
                                     Hoşgeldini Sn. @User.FindFirst("FullName")?.Value
-                                </span>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="ChangePassword">
+                                        <i class="fa fa-key"></i>
+                                        Parola Değiştir
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fa fa-cog"></i>
+                                        Hesabım
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fa fa-shopping-bag"></i>
+                                        Siparişlerim
+                                    </a>
+                                </div>
                             </li>
                             <li class="nav-item">
                                 <a asp-controller="Account" asp-action="Logout" class="nav-link">

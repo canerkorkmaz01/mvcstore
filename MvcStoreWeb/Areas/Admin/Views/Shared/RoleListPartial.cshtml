@@ -1,11 +1,11 @@
 ﻿@model RoleListItemViewModel
-<form asp-action="SetRole" method="get">
+<form asp-action="SetRole" method="get" id="form_@Model.UserId">
     <input type="hidden" asp-for="@Model.UserId" />
     <input type="hidden" asp-for="@Model.CurrentRoleName" />
     <div class="input-group">
         <select class="custom-select" asp-items="ViewBag.Roles as SelectList" asp-for="@Model.Role.Name"></select>
         <div class="input-group-append">
-            <button type="submit" class="btn btn-warning">Uygula</button>
+            <button type="submit" data-target="form_@Model.UserId" class="btn btn-warning change-role-btn">Uygula</button>
         </div>
     </div>
 </form>

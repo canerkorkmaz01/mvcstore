@@ -15,7 +15,7 @@ using X.PagedList;
 namespace MvcStoreWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Administrators, CatalogAdministrators")]
+    [Authorize(Roles = "Administrators, AppAdministrators, CatalogAdministrators")]
     public class RayonsController : Controller
     {
         private const string entityName = "Reyon";
