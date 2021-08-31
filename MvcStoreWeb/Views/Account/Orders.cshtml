@@ -1,0 +1,58 @@
+﻿@model User
+@{
+    ViewData["title"] = "Siparişlerim";
+}
+
+<div class="card">
+    <div class="card-body d-flex flex-column">
+        @foreach (var order in Model.Orders)
+        {
+        <div class="p-2 border mb-2 d-flex flex-column">
+            @switch (order.OrderStatus)
+            {
+                case OrderStatus.New:
+                    <span class="text-info">Hazırlanıyor</span>
+                    break;
+                case OrderStatus.Shipped:
+                    <span class="text-success">Gönderildi</span>
+                    break;
+                case OrderStatus.Cancelled:
+                    <span class="text-danger">İptal Edildi</span>
+                    break;
+            }
+            <div><b>@order.Id.ToString("000000")</b></div>
+            <div><i>@order.DateCreated</i></div>
+            <div>@order.GrandTotal.ToString("c2")</div>
+            <div class="py-2 text-right">
+                <button type="button" class="btn btn-light" data-toggle="collapse" data-target="#order_@order.Id"><i class="fa fa-plus"></i></button>
+            </div>
+            <div class="collapse pl-5 p-4 bg-light" id="order_@order.Id">
+                <table class="table bg-white">
+                    <tbody>
+                        @foreach (var orderItem in order.OrderItems)
+                        {
+                            <tr>
+                                <td>
+                                    <img src="@orderItem.Product.Photo" height="80" />
+                                </td>
+                                <td>
+                                    @orderItem.Product.Name
+                                </td>
+                                <td>
+                                    @orderItem.Price.ToString("c2")
+                                </td>
+                                <td>
+                                    @orderItem.Quantity.ToString()
+                                </td>
+                                <td>
+                                    @orderItem.LineTotal.ToString("c2")
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        }
+    </div>
+</div>

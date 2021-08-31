@@ -232,6 +232,43 @@ namespace MvcStoreWeb.Controllers
             return View();
         }
 
+
+        [Authorize, HttpPost]
+        public async Task<IActionResult> Payment([FromBody] PaymentViewModel model)
+        {
+
+            var shoppingChart = new ShoppingCart();
+
+            var value = Request.Cookies["shoppingCart"];
+
+            if (value != null)
+                shoppingChart = JsonConvert.DeserializeObject<ShoppingCart>(value);
+
+            var order = new Order
+            {
+                DateCreated = DateTime.Now,
+                Enabled = true,
+                OrderStatus = OrderStatus.New,
+                UserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value),
+                OrderItems = shoppingChart.Items.Select(p => new OrderItem
+                {
+                    DateCreated = DateTime.Now,
+                    Enabled = true,
+                    Price = p.Price,
+                    ProductId = p.Id,
+                    Quantity = p.Quantity,
+                    UserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)
+                }).ToList()
+            };
+
+            order.OrderItems.ToList().ForEach(p => context.Entry(p).State = EntityState.Added);
+
+            context.Entry(order).State = EntityState.Added;
+            await context.SaveChangesAsync();
+            Response.Cookies.Delete("shoppingCart");
+            return Json(new { succeded = true, orderId = order.Id.ToString("000000") });
+        }
+
         [Authorize]
         public async Task<IActionResult> UserAddresses()
         {
@@ -241,9 +278,6 @@ namespace MvcStoreWeb.Controllers
                 deliveryAddresses = user.Addresses.OfType<DeliveryAddress>().ToList().Select(p => new { p.Id, p.Name, p.Address, p.PhoneNumber, p.ZipCode, province = p.City.Province.Name, city = p.City.Name }),
                 invoiceAddresses = user.Addresses.OfType<InvoiceAddress>().ToList().Select(p => new { p.Id, p.Name, p.Address, p.TaxOffice, p.TaxNumber, province = p.City.Province.Name, city = p.City.Name })
             };
-#if DEBUG
-            System.Threading.Thread.Sleep(5000);
-#endif
             return Json(addresses);
         }
 
@@ -261,5 +295,14 @@ namespace MvcStoreWeb.Controllers
             await context.SaveChangesAsync();
             return Ok();
         }
+
+        [Authorize]
+        public async Task<IActionResult> Orders()
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var model = await context.Users.FindAsync(userId);
+            return View(model);
+        }
+
     }
 }

@@ -16,6 +16,8 @@ namespace MvcStoreData
     {
         public OrderStatus OrderStatus { get; set; }
 
+        public string CargoCode { get; set; }
+
         [NotMapped]
         public decimal GrandTotal => OrderItems.Sum(p => p.LineTotal);
 

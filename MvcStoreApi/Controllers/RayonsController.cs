@@ -24,10 +24,6 @@ namespace MvcStoreApi.Controllers
             this.context = context;
         }
 
-        //restful get(liste), post(yeni kayıt), put(güncelleme), delete(silme)
-
-        //stateless 
-
         [HttpGet]
         public async Task<IEnumerable<dynamic>> Get()
         {

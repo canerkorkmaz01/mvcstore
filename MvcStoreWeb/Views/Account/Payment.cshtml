@@ -8,18 +8,18 @@
         <form method="post">
             <div class="form-group">
                 <label asp-for="CardHolderName"></label>
-                <input asp-for="CardHolderName" class="form-control" />
+                <input asp-for="CardHolderName" class="form-control" ng-model="payment.cardHolderName" />
                 <span asp-validation-for="CardHolderName"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CardNumber"></label>
-                <input asp-for="CardNumber" class="form-control" />
+                <input asp-for="CardNumber" class="form-control" ng-model="payment.cardNumber" />
                 <span asp-validation-for="CardNumber"></span>
             </div>
             <div class="form-row">
                 <div class="form-group col-3">
                     <label asp-for="ExpMonth"></label>
-                    <select asp-for="ExpMonth" class="custom-select">
+                    <select asp-for="ExpMonth" class="custom-select" ng-model="payment.expMonth">
                         <option disabled selected>Seçiniz...</option>
                         @for (int i = 1; i <= 12; i++)
                         {
@@ -30,7 +30,7 @@
                 </div>
                 <div class="form-group col-3">
                     <label asp-for="ExpYear"></label>
-                    <select asp-for="ExpYear" class="custom-select">
+                    <select asp-for="ExpYear" class="custom-select" ng-model="payment.expYear">
                         <option disabled selected>Seçiniz...</option>
                         @for (int i = DateTime.Today.Year; i <= DateTime.Today.Year + 10; i++)
                         {
@@ -43,7 +43,7 @@
             <div class="form-row">
                 <div class="form-group col-2">
                     <label asp-for="CVV"></label>
-                    <input asp-for="CVV" class="form-control" />
+                    <input asp-for="CVV" class="form-control" ng-model="payment.cVV" />
                     <span asp-validation-for="CVV"></span>
                 </div>
             </div>
@@ -55,8 +55,8 @@
                         <span class="sr-only">Loading...</span>
                     </div>
                     <div>
-                        <div class="p-2 mb-2 border" ng-repeat="address in addresses.deliveryAddresses">
-                            <input type="radio" value="{{address.id}}" />
+                        <div class="p-2 mb-2 border" ng-click="changeDeliveryAddress(address.id)" ng-class="{ 'bg-light' : address.id === payment.deliveryAddressId }" ng-repeat="address in addresses.deliveryAddresses">
+                            <div ng-show="address.id === payment.deliveryAddressId"><i class="fa fa-check text-success"></i></div>
                             <div>{{address.name}}</div>
                             <div class="small">{{address.address}}</div>
                             <div class="small"><i>{{address.city}} / {{address.province}}</i></div>
@@ -82,6 +82,7 @@
 
                 </div>
             </div>
+            <button type="submit" class="btn btn-primary" ng-click="send()">Ödeme Yap</button>
         </form>
     </div>
 
@@ -149,14 +150,17 @@
         const app = angular
             .module("payment", [])
             .controller("paymentController", ($scope, $http) => {
-                $scope.loaded = false;
 
+                $scope.loaded = false;
+                $scope.payment = {};
                 $scope.init = () => {
 
                     $http
                         .get('/account/useraddresses')
                         .then(response => {
                             $scope.addresses = response.data;
+                            if ($scope.addresses.deliveryAddresses.length > 0)
+                                $scope.payment.deliveryAddressId = $scope.addresses.deliveryAddresses[0].id;
                             $scope.loaded = true;
                         });
 
@@ -169,7 +173,7 @@
 
                 $scope.openDieliveryAddresModal = () => {
                     $('#deliveryAddressModal').modal();
-                }
+                };
 
                 $scope.saveDeliveryAddress = () => {
                     $http
@@ -178,7 +182,31 @@
                             $scope.init();
                             $('#deliveryAddressModal').modal('hide');
                         });
-                }
+                };
+
+                $scope.changeDeliveryAddress = (i) => {
+                    $scope.payment.deliveryAddressId = i;
+                };
+
+                $scope.send = () => {
+                    $http
+                        .post('/account/payment', $scope.payment)
+                        .then(response => {
+                            if (response.data.succeded) {
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Teşekkürler',
+                                    html: `${response.data.orderId} nolu siparişiniz başarıyla oluşturulmuştur.`,
+                                    confirmButtonText: 'TAMAM'
+                                })
+                                    .then(result => {
+                                        window.location = '/';
+                                    })
+                            }
+                        });
+                };
+
+
             });
 
     </script>
